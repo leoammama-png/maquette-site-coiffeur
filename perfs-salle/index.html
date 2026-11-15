@@ -2,92 +2,277 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0D1116">
 <title>Mes perfs salle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F2F5F7;--surface:#FFFFFF;--surface2:#EAF0F3;--fg:#15202B;--muted:#5A6874;--line:#D9E1E7;
-  --accent:#0E6B73;--accent-soft:#D5ECEE;--accent-fg:#FFFFFF;--bad:#C93A25;--good:#1B7F4B;--warm:#8A98A4;
-}
-@media (prefers-color-scheme:dark){
-  :root{--bg:#0E151B;--surface:#16202A;--surface2:#1D2A35;--fg:#EAF0F4;--muted:#9BA9B5;--line:#263441;
-    --accent:#4FC3CB;--accent-soft:#17383C;--accent-fg:#06262A;--bad:#FF7F68;--good:#5ED69B;--warm:#6F7F8C}
+  color-scheme:dark;
+  --bg:#0D1116;--surface:#151B22;--surface2:#1B232C;--fg:#E9EDF0;--muted:#8D99A5;--line:#242D37;
+  --accent:#4C8DFF;--accent-soft:#16294A;--accent-fg:#06101F;--gold:#F2C230;--bad:#FF8570;--good:#5ED69B;--warm:#8795A2;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --text:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --pad:max(16px,calc((100vw - 760px)/2 + 16px));
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:48px}
-.wrap{max-width:760px;margin:0 auto;padding:0 16px}
-header{padding:28px 0 8px}
-h1{font-size:30px;line-height:1.1;margin:0 0 6px;letter-spacing:-.02em}
-.sub{margin:0;color:var(--muted)}
-h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:28px 0 10px;font-weight:700}
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}
-.tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center}
-.tile b{display:block;font-size:24px;font-variant-numeric:tabular-nums;line-height:1.1}
-.tile span{font-size:12px;color:var(--muted)}
-
-.prs{display:grid;gap:8px}
-.pr{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:10px 12px}
-.pr .n{font-weight:650}
-.pr .d{font-size:13px;color:var(--muted)}
-.pr .v{font-variant-numeric:tabular-nums;font-weight:700;text-align:right;white-space:nowrap}
-.pr .v small{display:block;font-weight:500;color:var(--good);font-size:12px}
-
-nav{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 8px;margin-top:14px;border-bottom:1px solid var(--line)}
-.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 16px;margin:0 -16px}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;font:inherit;font-size:14px;font-weight:650;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;white-space:nowrap}
-.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
-.search{margin-top:8px}
-input,select{font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-width:0}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:76px}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.45 var(--text);padding-bottom:max(56px,env(safe-area-inset-bottom));overflow-x:hidden}
+.skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--accent);color:var(--accent-fg);padding:10px 14px;border-radius:10px;font-weight:700;text-decoration:none}
+.skip:focus{top:10px}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
-.ex{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:10px}
+/* ---------- hero 3D ---------- */
+.hero{position:relative;isolation:isolate;display:grid;grid-template-rows:auto 1fr;min-height:clamp(620px,88svh,780px);overflow:hidden;
+  background:radial-gradient(110% 75% at 68% 38%,#1d2833 0%,#111820 52%,#0A0E13 100%)}
+#rig{position:absolute;inset:0;z-index:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab;opacity:0;transition:opacity .5s ease}
+.hero.gl-ready #rig{opacity:1}
+#rig:active{cursor:grabbing}
+#rig:focus-visible{outline-offset:-4px}
+.no-gl #rig,.no-gl .hint{display:none}
+.no-gl .hero{min-height:0}
+.hero-top,.hero-copy{position:relative;z-index:1;pointer-events:none;padding-inline:var(--pad)}
+.hero-top{padding-top:max(20px,env(safe-area-inset-top));display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+h1{font:700 32px/1 var(--display);letter-spacing:.005em;margin:0}
+.sub{margin:6px 0 0;color:var(--muted);font-size:14px;max-width:26ch}
+.hint{display:flex;align-items:center;gap:8px;margin:4px 0 0;color:var(--muted);font-size:13px;white-space:nowrap;transition:opacity .4s ease}
+.hint svg{width:18px;height:18px}
+.dragged .hint{opacity:0}
+.hero-copy{padding-bottom:26px;align-self:end}
+.lift-name{margin:0;font-weight:600;font-size:18px;line-height:1.2;max-width:28ch}
+.lift-num{margin:2px 0 0;font:700 clamp(96px,27vw,176px)/.84 var(--display);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.lift-num small{font-size:.26em;font-weight:600;color:var(--muted);margin-left:.14em;letter-spacing:0}
+.lift-meta{margin:8px 0 0;color:var(--fg);font-size:15px;font-variant-numeric:tabular-nums}
+.rig-note{margin:4px 0 0;color:var(--muted);font-size:14px;max-width:44ch}
+
+.hero:not(.go) [data-i]{opacity:0}
+.hero.go [data-i]{animation:rise .9s var(--ease) backwards;animation-delay:calc(var(--d,0)*1ms)}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* ---------- chiffres ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line);background:var(--bg)}
+.stat{padding:18px 8px 16px;text-align:center}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat b{display:block;font:700 clamp(34px,9vw,52px)/1 var(--display);font-variant-numeric:tabular-nums}
+.stat span{display:block;margin-top:4px;font-size:13px;color:var(--muted)}
+
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+h2{font:700 26px/1.1 var(--display);letter-spacing:.01em;margin:38px 0 12px}
+
+/* ---------- records récents ---------- */
+.prs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;margin:0 -16px;padding:2px 16px 10px;scrollbar-width:none}
+.prs::-webkit-scrollbar{display:none}
+.pr{flex:0 0 auto;width:min(236px,68vw);scroll-snap-align:start;text-align:left;font:inherit;color:inherit;cursor:pointer;
+  background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:6px 6px 14px 14px;padding:12px 14px 14px;
+  transition:transform .25s var(--ease),border-color .25s ease,background-color .25s ease}
+.pr:hover{transform:translateY(-3px);background:var(--surface2)}
+.pr:active{transform:translateY(0)}
+.pr .n{display:block;font-weight:600;line-height:1.2;min-height:2.4em}
+.pr .v{display:block;margin-top:6px;font:700 38px/1 var(--display);font-variant-numeric:tabular-nums}
+.pr .v i{font-style:normal;font-size:.5em;color:var(--muted);font-weight:600;margin-left:.2em}
+.pr .g{display:block;margin-top:6px;font-size:13px;color:var(--good);font-variant-numeric:tabular-nums}
+.pr .d{color:var(--muted);margin-left:6px}
+
+/* ---------- navigation ---------- */
+nav{position:sticky;top:0;z-index:5;margin:22px -16px 0;padding:10px 16px 10px;background:rgba(13,17,22,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;font:600 14px/1 var(--text);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:11px 15px;cursor:pointer;white-space:nowrap;
+  transition:background-color .2s ease,color .2s ease,border-color .2s ease,transform .2s var(--ease)}
+.chip:hover{border-color:#34414f}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.search{margin-top:8px}
+input,select{font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 12px;width:100%;min-width:0;min-height:44px}
+input::placeholder{color:#6f7b87}
+
+/* ---------- exercices ---------- */
+#list{view-transition-name:list}
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px;transition:border-color .3s ease,box-shadow .3s ease}
+.ex:hover{border-color:#32404e}
+.ex.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 .ex-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.ex-name{font-weight:700;font-size:17px;line-height:1.2}
-.ex-meta{font-size:13px;color:var(--muted);margin-top:2px}
+.ex-name{font-weight:650;font-size:17px;line-height:1.2}
+.ex-meta{font-size:13px;color:var(--muted);margin-top:3px}
 .rec{text-align:right;white-space:nowrap}
-.rec b{font-size:22px;font-variant-numeric:tabular-nums;line-height:1}
-.rec b small{font-size:13px;font-weight:600;color:var(--muted)}
-.rec span{display:block;font-size:12px;color:var(--muted)}
-.badge{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 6px;margin-left:6px;vertical-align:2px}
-.spark{margin:10px 0 6px}
-.spark svg{display:block;width:100%;height:44px}
+.rec b{font:700 34px/.95 var(--display);font-variant-numeric:tabular-nums}
+.rec b small{font:600 14px var(--text);color:var(--muted);margin-left:2px}
+.rec span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.badge{display:inline-block;font:700 12px/1 var(--text);background:var(--gold);color:#201a05;border-radius:5px;padding:3px 6px;margin-left:8px;vertical-align:2px;animation:pop .6s var(--ease) both .4s}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.spark{margin:12px 0 8px}
+.spark svg{display:block;width:100%;height:52px;overflow:visible}
+.spark .area{fill:var(--accent);opacity:.1}
+.spark .line{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.anim .spark .line{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s var(--ease) .1s forwards}
+.anim .spark .area{animation:fadein .8s ease .5s both}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{from{opacity:0}to{opacity:.1}}
 .last{font-size:14px;font-variant-numeric:tabular-nums}
-.last .dt{color:var(--muted);margin-right:6px}
+.last .dt{color:var(--muted);margin-right:8px}
 .w{color:var(--warm)}
 .f{color:var(--bad);font-weight:700}
-details.hist{margin-top:8px}
-details summary{cursor:pointer;color:var(--accent);font-size:14px;font-weight:650;padding:6px 0;list-style:none}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px}
+button.load{font:600 14px/1 var(--text);color:var(--fg);background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:11px 14px;min-height:44px;cursor:pointer;
+  transition:background-color .2s ease,border-color .2s ease,transform .2s var(--ease)}
+button.load:hover{border-color:var(--accent);background:var(--accent-soft)}
+button.load:active{transform:scale(.97)}
+details.hist{margin-top:4px}
+details summary{cursor:pointer;color:var(--accent);font-size:14px;font-weight:600;padding:12px 0;list-style:none;min-height:44px}
 details summary::-webkit-details-marker{display:none}
-details summary::before{content:"▸ "}
-details[open]>summary::before{content:"▾ "}
-.sess{display:grid;grid-template-columns:52px 1fr;gap:8px;padding:7px 0;border-top:1px solid var(--line);font-size:14px;font-variant-numeric:tabular-nums}
+details summary::before{content:"";display:inline-block;width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);margin-right:10px;transition:transform .25s var(--ease)}
+details[open]>summary::before{transform:rotate(45deg) translate(-2px,-2px)}
+details{interpolate-size:allow-keywords}
+details::details-content{block-size:0;overflow:clip;transition:block-size .3s var(--ease),content-visibility .3s allow-discrete}
+details[open]::details-content{block-size:auto}
+.sess{display:grid;grid-template-columns:52px 1fr;gap:8px;padding:8px 0;border-top:1px solid var(--line);font-size:14px;font-variant-numeric:tabular-nums}
 .sess .dt{color:var(--muted)}
 .sess .sets{display:flex;flex-wrap:wrap;gap:4px 10px}
 .empty{color:var(--muted);text-align:center;padding:28px 0}
 
-.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:10px}
-form{display:grid;gap:10px}
+/* ---------- formulaire ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px}
+form{display:grid;gap:12px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-label{display:grid;gap:4px;font-size:13px;font-weight:700}
-button.primary{font:inherit;font-weight:700;border:0;border-radius:999px;background:var(--accent);color:var(--accent-fg);padding:12px 20px;cursor:pointer}
-button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:4px 10px;cursor:pointer}
-.note{font-size:13px;color:var(--muted);margin:8px 0 0}
+label{display:grid;gap:5px;font-size:14px;font-weight:600}
+button.primary{font:700 16px/1 var(--text);border:0;border-radius:999px;background:var(--accent);color:var(--accent-fg);padding:15px 22px;min-height:48px;cursor:pointer;transition:transform .2s var(--ease),filter .2s ease}
+button.primary:hover{filter:brightness(1.1)}
+button.primary:active{transform:scale(.97)}
+button.ghost{font:600 13px/1 var(--text);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:12px 14px;min-height:44px;cursor:pointer}
+button.ghost:hover{color:var(--fg);border-color:#3a4857}
+.note{font-size:13px;color:var(--muted);margin:10px 0 0}
 .mine{margin-top:12px}
 .mine .r{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+
+/* ---------- transition de liste (changement de groupe) ---------- */
+::view-transition-old(root),::view-transition-new(root){animation:none}
+::view-transition-old(list){animation:.14s ease-in both vt-out}
+::view-transition-new(list){animation:.32s var(--ease) both vt-in}
+@keyframes vt-out{to{opacity:0}}
+@keyframes vt-in{from{opacity:0;transform:translateY(12px)}}
+
+@media (max-width:560px){.hint{display:none}.sub{max-width:20ch}}
+@media (min-width:900px){
+  .hero{min-height:clamp(560px,78svh,720px)}
+  .sub{max-width:none}
+  .lift-num{font-size:176px}
+  .hero-copy{padding-bottom:40px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .hero:not(.go) [data-i]{opacity:1}
+  .anim .spark .line{stroke-dashoffset:0}
+}
+
+/* ===== v3 : couleur par groupe, relief, énergie ===== */
+@property --gc{syntax:'<color>';inherits:true;initial-value:#FF5A3C}
+:root{--bg:#090C11;--surface:#121821;--surface2:#1A2230;--line:#232D3A;--muted:#93A0AD;--gc:#FF5A3C;--hot:#FF5A3C;--sun:#FFB020}
+html{transition:--gc .7s ease}
+body{background:
+  radial-gradient(900px 520px at 105% 520px,color-mix(in srgb,var(--gc) 12%,transparent),transparent 70%),
+  radial-gradient(760px 460px at -15% 1100px,color-mix(in srgb,var(--gc) 8%,transparent),transparent 70%),
+  var(--bg)}
+h1{font-size:38px;text-transform:uppercase;letter-spacing:.05em}
+h1::after{content:"";display:block;width:56px;height:5px;margin-top:8px;border-radius:3px;background:linear-gradient(90deg,var(--gc),var(--sun))}
+.sub{color:#B3BDC7}
+.hero{background:
+  radial-gradient(70% 62% at 72% 40%,color-mix(in srgb,var(--gc) 40%,transparent) 0%,transparent 68%),
+  radial-gradient(60% 50% at 6% 100%,color-mix(in srgb,var(--gc) 20%,transparent),transparent 70%),
+  linear-gradient(180deg,#111821,#090C11)}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:44px 44px;-webkit-mask-image:radial-gradient(80% 85% at 70% 40%,#000,transparent 78%);mask-image:radial-gradient(80% 85% at 70% 40%,#000,transparent 78%)}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;z-index:2;background:linear-gradient(90deg,transparent,var(--gc),var(--sun),transparent)}
+.tag{display:inline-flex;align-items:center;gap:8px;margin:0 0 12px;padding:7px 13px 7px 11px;border-radius:999px;font:700 12px/1 var(--text);letter-spacing:.14em;text-transform:uppercase;
+  color:color-mix(in srgb,var(--gc) 55%,#fff);background:color-mix(in srgb,var(--gc) 16%,transparent);border:1px solid color-mix(in srgb,var(--gc) 50%,transparent)}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gc);box-shadow:0 0 12px var(--gc)}
+.tag:empty{display:none}
+.lift-name{font-size:20px;font-weight:700}
+.lift-num{background:linear-gradient(180deg,#fff 18%,color-mix(in srgb,var(--gc) 65%,#fff) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 44px color-mix(in srgb,var(--gc) 50%,transparent))}
+.lift-num small{-webkit-text-fill-color:var(--gc);color:var(--gc)}
+.lift-meta{color:#DDE3E8}
+
+.stats{background:linear-gradient(180deg,var(--surface),var(--bg))}
+.stat{border-top:4px solid var(--gc);position:relative}
+.stat:nth-child(1){--gc:#FF5A3C}.stat:nth-child(2){--gc:#3DA5FF}.stat:nth-child(3){--gc:#2FD38A}
+.stat::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--gc) 16%,transparent),transparent 70%);pointer-events:none}
+.stat b{position:relative;background:linear-gradient(180deg,#fff 10%,var(--gc));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.stat span{position:relative}
+
+h2{display:flex;align-items:center;gap:12px;text-transform:uppercase;letter-spacing:.07em;font-size:25px}
+h2::before{content:"";flex:0 0 auto;width:6px;height:1.05em;border-radius:3px;background:linear-gradient(var(--gc),color-mix(in srgb,var(--gc) 25%,transparent));box-shadow:0 0 14px color-mix(in srgb,var(--gc) 55%,transparent)}
+
+.pr{position:relative;overflow:hidden;border-top-color:var(--line);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--gc) 26%,var(--surface)),var(--surface) 64%);
+  border-color:color-mix(in srgb,var(--gc) 38%,var(--line))}
+.pr::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--gc);box-shadow:0 0 18px var(--gc)}
+.pr .v{color:#fff;text-shadow:0 0 26px color-mix(in srgb,var(--gc) 65%,transparent)}
+.pr .g{color:color-mix(in srgb,var(--gc) 55%,#fff);font-weight:700}
+.pr:hover{background:linear-gradient(160deg,color-mix(in srgb,var(--gc) 34%,var(--surface)),var(--surface) 70%);box-shadow:0 14px 32px -14px color-mix(in srgb,var(--gc) 70%,transparent)}
+
+nav{background:rgba(9,12,17,.86)}
+.chip{display:inline-flex;align-items:center;gap:8px;border-color:color-mix(in srgb,var(--gc) 30%,var(--line))}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gc);flex:0 0 auto}
+.chip:hover{border-color:var(--gc);background:color-mix(in srgb,var(--gc) 14%,var(--surface))}
+.chip[aria-pressed="true"]{background:var(--gc);border-color:var(--gc);color:#0A0D12;box-shadow:0 8px 24px -8px var(--gc)}
+.chip[aria-pressed="true"]::before{background:#0A0D12}
+
+.ex{position:relative;overflow:hidden;padding-left:22px;
+  background:linear-gradient(150deg,color-mix(in srgb,var(--gc) 15%,var(--surface)),var(--surface) 58%);
+  border-color:color-mix(in srgb,var(--gc) 24%,var(--line))}
+.ex::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(var(--gc),color-mix(in srgb,var(--gc) 25%,transparent))}
+.ex:hover{border-color:color-mix(in srgb,var(--gc) 60%,var(--line));box-shadow:0 16px 36px -18px color-mix(in srgb,var(--gc) 70%,transparent)}
+.ex.on{border-color:var(--gc);box-shadow:0 0 0 1px var(--gc) inset,0 0 44px -12px var(--gc)}
+.rec b{color:#fff;font-size:42px;text-shadow:0 0 26px color-mix(in srgb,var(--gc) 55%,transparent)}
+.rec b small{color:var(--gc);font-size:14px;text-shadow:none}
+.ex-name{font-size:18px}
+.badge{background:linear-gradient(135deg,#FFD84A,#FF9F1C);color:#2a1a00;box-shadow:0 0 16px rgba(255,176,32,.55);letter-spacing:.06em}
+.spark .line{stroke:var(--gc);stroke-width:3;filter:drop-shadow(0 0 6px var(--gc))}
+.spark .area{fill:var(--gc);opacity:.2}
+.anim .spark .area{animation:fadein2 .8s ease .5s both}
+@keyframes fadein2{from{opacity:0}to{opacity:.2}}
+.last .dt{color:color-mix(in srgb,var(--gc) 50%,#fff)}
+details summary{color:color-mix(in srgb,var(--gc) 55%,#fff)}
+button.load{border-color:color-mix(in srgb,var(--gc) 55%,var(--line));background:color-mix(in srgb,var(--gc) 12%,var(--surface2))}
+button.load:hover{background:var(--gc);border-color:var(--gc);color:#0A0D12}
+
+.card{background:linear-gradient(150deg,color-mix(in srgb,var(--gc) 12%,var(--surface)),var(--surface) 60%);border-color:color-mix(in srgb,var(--gc) 28%,var(--line))}
+button.primary{background:linear-gradient(135deg,var(--hot),var(--sun));color:#1B0C03;box-shadow:0 10px 28px -10px var(--hot)}
+input:focus,select:focus{border-color:var(--gc);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--gc) 35%,transparent)}
+@media (max-width:560px){#rig{transform:scale(1.4);transform-origin:50% 46%}.hero{min-height:clamp(640px,92svh,780px)}}
+@media (prefers-reduced-motion:reduce){html{transition:none}.anim .spark .area{animation:none}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>Mes perfs salle</h1>
-    <p class="sub" id="sub">Force par groupe musculaire.</p>
-    <div class="tiles" id="tiles"></div>
-  </header>
+<a class="skip" href="#main">Aller aux exercices</a>
 
+<header class="hero" id="hero">
+  <canvas id="rig" role="img" aria-label="Montage 3D de la charge du record affiché. Glisse pour tourner." tabindex="0"></canvas>
+  <div class="hero-top">
+    <div data-i style="--d:0">
+      <h1>Mes perfs salle</h1>
+      <p class="sub" id="sub">Force par groupe musculaire.</p>
+    </div>
+    <p class="hint" data-i style="--d:900"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>Glisse pour tourner</p>
+  </div>
+  <div class="hero-copy" aria-live="polite">
+    <p class="tag" id="lift-tag" data-i style="--d:100"></p>
+    <p class="lift-name" id="lift-name" data-i style="--d:150">Chargement…</p>
+    <p class="lift-num" data-i style="--d:260"><span id="lift-kg">0</span><small>kg</small></p>
+    <p class="lift-meta" id="lift-meta" data-i style="--d:380"></p>
+    <p class="rig-note" id="rig-note" data-i style="--d:480"></p>
+  </div>
+</header>
+
+<section class="stats" id="tiles" aria-label="Chiffres clés"></section>
+
+<main class="wrap" id="main">
   <h2>Records récents</h2>
   <div class="prs" id="prs"></div>
 
@@ -121,9 +306,10 @@ button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transpare
     <p class="note">Les ajouts restent dans ce navigateur, sur cet appareil. Les données de départ viennent de ton export d’application.</p>
     <div class="mine" id="mine"></div>
   </div>
-</div>
+</main>
 
 <script type="application/json" id="data">{"meta":{"first":"2026-03-01","last":"2026-11-13","days":120,"workouts":122},"groups":[{"g":"Pectoraux","ex":[{"n":"Pec fly machine","ss":[{"d":"2026-03-05","s":[[25.0,9,"n"],[30.0,10,"n"],[30.0,8,"n"]]},{"d":"2026-03-10","s":[[30.0,13,"n"],[30.0,12,"n"],[35.0,10,"n"]]},{"d":"2026-03-18","s":[[30.0,10,"n"],[35.0,11,"n"],[35.0,12,"n"]]},{"d":"2026-03-25","s":[[35.0,10,"n"],[40.0,10,"n"],[40.0,12,"n"]]},{"d":"2026-04-03","s":[[35.0,11,"n"],[40.0,9,"n"],[40.0,9,"n"]]},{"d":"2026-04-08","s":[[40.0,8,"n"],[40.0,9,"n"],[40.0,10,"n"]]},{"d":"2026-04-29","s":[[35.0,9,"n"],[35.0,7,"n"],[35.0,8,"n"]]},{"d":"2026-05-05","s":[[40.0,8,"n"],[40.0,8,"n"],[40.0,7,"n"]]},{"d":"2026-05-28","s":[[35.0,9,"n"],[35.0,8,"n"],[35.0,9,"n"]]},{"d":"2026-06-10","s":[[40.0,9,"n"],[40.0,8,"n"],[45.0,5,"n"]]},{"d":"2026-06-29","s":[[55.0,6,"n"],[50.0,8,"n"],[47.5,8,"n"]]},{"d":"2026-07-06","s":[[50.0,7,"n"],[50.0,8,"n"],[52.5,6,"n"]]},{"d":"2026-07-13","s":[[55.0,8,"n"],[60.0,6,"n"]]},{"d":"2026-07-24","s":[[57.5,7,"n"],[55.0,7,"n"]]},{"d":"2026-07-28","s":[[60.0,7,"n"],[60.0,8,"n"]]},{"d":"2026-08-03","s":[[65.0,6,"n"],[65.0,6,"n"]]},{"d":"2026-08-06","s":[[65.0,8,"n"],[65.0,6,"n"]]},{"d":"2026-08-14","s":[[65.0,7,"n"]]},{"d":"2026-08-18","s":[[65.0,7,"n"],[65.0,8,"n"]]},{"d":"2026-09-07","s":[[60.0,5,"n"],[55.0,8,"n"]]},{"d":"2026-09-10","s":[[55.0,9,"n"],[60.0,6,"n"]]},{"d":"2026-09-14","s":[[60.0,7,"n"],[60.0,6,"n"]]},{"d":"2026-09-17","s":[[65.0,9,"n"],[70.0,6,"n"]]},{"d":"2026-09-21","s":[[70.0,4,"n"],[60.0,2,"n"],[60.0,10,"n"]]},{"d":"2026-09-24","s":[[65.0,6,"n"],[65.0,6,"n"]]},{"d":"2026-09-25","s":[[70.0,5,"n"],[70.0,6,"n"]]},{"d":"2026-09-28","s":[[60.0,6,"n"]]},{"d":"2026-09-30","s":[[60.0,8,"n"]]},{"d":"2026-10-07","s":[[65.0,8,"n"],[70.0,6,"n"]]},{"d":"2026-10-12","s":[[70.0,5,"n"]]}]},{"n":"Développé couché haltères","ss":[{"d":"2026-03-13","s":[[18.0,6,"n"],[22.5,8,"n"],[24.0,7,"n"]]},{"d":"2026-03-20","s":[[20.0,8,"n"],[24.0,7,"n"],[24.0,9,"n"]]},{"d":"2026-04-10","s":[[24.0,7,"n"],[26.0,8,"n"],[28.0,6,"n"],[18.0,5,"w"]]},{"d":"2026-05-26","s":[[28.0,6,"n"],[28.0,7,"n"],[20.0,4,"w"]]},{"d":"2026-06-05","s":[[28.0,8,"n"],[30.0,3,"n"],[24.0,8,"w"]]},{"d":"2026-06-10","s":[[30.0,5,"n"],[30.0,4,"n"],[26.0,6,"n"],[22.5,5,"w"]]},{"d":"2026-07-08","s":[[32.5,4,"n"],[32.5,3,"n"],[22.5,7,"w"]]},{"d":"2026-07-28","s":[[32.5,6,"n"],[35.0,3,"n"],[22.5,7,"w"]]},{"d":"2026-08-03","s":[[35.0,6,"n"],[37.5,2,"n"],[25.0,6,"w"]]},{"d":"2026-08-06","s":[[37.5,5,"n"],[40.0,3,"n"],[25.0,8,"w"]]},{"d":"2026-08-14","s":[[40.0,2,"n"],[37.5,2,"n"],[25.0,5,"w"]]},{"d":"2026-08-18","s":[[40.0,4,"n"],[40.0,1,"n"],[25.0,6,"w"]]},{"d":"2026-09-10","s":[[37.5,2,"n"],[37.5,3,"n"],[22.5,10,"w"]]},{"d":"2026-09-14","s":[[37.5,5,"n"],[37.5,4,"n"],[22.5,10,"w"]]},{"d":"2026-09-21","s":[[37.5,6,"n"],[40.0,2,"n"],[25.0,5,"w"]]},{"d":"2026-09-28","s":[[40.0,2,"n"],[37.5,6,"n"],[20.0,8,"w"]]},{"d":"2026-10-12","s":[[40.0,4,"n"],[40.0,0,"n"],[25.0,8,"w"]]},{"d":"2026-11-02","s":[[40.0,4,"n"],[40.0,4,"n"],[20.0,8,"w"]]},{"d":"2026-11-09","s":[[40.0,3,"n"],[40.0,5,"n"],[25.0,6,"w"]]},{"d":"2026-11-13","s":[[40.0,7,"n"],[42.5,3,"n"],[25.0,6,"w"]]}]},{"n":"Chest press machine","ss":[{"d":"2026-03-05","s":[[50.0,8,"n"],[50.0,7,"n"],[40.0,10,"n"]]},{"d":"2026-03-10","s":[[50.0,10,"n"],[50.0,10,"n"],[50.0,7,"n"]]},{"d":"2026-03-18","s":[[50.0,10,"n"],[55.0,10,"n"],[55.0,8,"n"]]},{"d":"2026-03-25","s":[[45.0,10,"n"],[50.0,10,"n"],[57.5,7,"n"]]},{"d":"2026-04-03","s":[[50.0,10,"n"],[55.0,9,"n"],[55.0,9,"n"]]},{"d":"2026-04-08","s":[[55.0,8,"n"],[55.0,9,"n"],[55.0,8,"n"]]},{"d":"2026-04-29","s":[[50.0,10,"n"],[55.0,8,"n"],[55.0,9,"n"]]},{"d":"2026-05-05","s":[[55.0,10,"n"],[60.0,8,"n"],[60.0,7,"n"]]},{"d":"2026-05-28","s":[[50.0,10,"n"],[60.0,10,"n"],[60.0,7,"n"]]},{"d":"2026-10-12","s":[[70.0,8,"n"],[70.0,5,"n"]]}]},{"n":"Développé incliné barre","ss":[{"d":"2026-06-29","s":[[60.0,6,"n"],[70.0,5,"n"],[70.0,4,"n"]]},{"d":"2026-07-06","s":[[60.0,7,"n"],[60.0,5,"n"]]},{"d":"2026-07-24","s":[[70.0,6,"n"],[75.0,3,"n"]]},{"d":"2026-09-25","s":[[70.0,2,"n"],[80.0,1,"n"],[84.0,1,"n"],[30.0,4,"n"]]},{"d":"2026-10-14","s":[[70.0,5,"n"],[80.0,2,"n"],[90.0,0,"n"]]},{"d":"2026-11-02","s":[[75.0,3,"n"],[75.0,5,"n"],[79.0,3,"n"]]},{"d":"2026-11-04","s":[[80.0,4,"n"]]},{"d":"2026-11-05","s":[[80.0,3,"n"],[82.5,2,"n"],[80.0,2,"n"],[70.0,2,"w"],[50.0,6,"w"]]},{"d":"2026-11-09","s":[[82.5,3,"n"]]},{"d":"2026-11-13","s":[[85.0,2,"n"],[75.0,3,"n"],[75.0,2,"n"]]}]},{"n":"Développé incliné Smith","ss":[{"d":"2026-03-04","s":[[20.0,8,"n"],[20.0,9,"n"],[20.0,10,"n"]]},{"d":"2026-03-10","s":[[20.0,10,"n"],[25.0,9,"n"],[25.0,7,"n"]]},{"d":"2026-03-25","s":[[25.0,8,"n"],[30.0,8,"n"],[30.0,9,"n"]]},{"d":"2026-04-03","s":[[30.0,5,"n"],[25.0,7,"n"],[25.0,7,"n"]]},{"d":"2026-04-08","s":[[30.0,8,"n"],[32.5,6,"n"],[30.0,6,"n"]]},{"d":"2026-04-29","s":[[30.0,8,"n"],[30.0,5,"n"],[30.0,9,"n"]]},{"d":"2026-05-05","s":[[30.0,6,"n"],[30.0,8,"n"],[30.0,10,"n"]]},{"d":"2026-05-28","s":[[30.0,8,"n"],[35.0,5,"n"],[35.0,4,"n"]]}]},{"n":"Incline hammer press","ss":[{"d":"2026-08-06","s":[[80.0,8,"n"]]},{"d":"2026-09-07","s":[[80.0,9,"n"],[85.0,7,"n"]]},{"d":"2026-09-10","s":[[90.0,5,"n"],[90.0,4,"n"]]},{"d":"2026-09-14","s":[[90.0,6,"n"],[90.0,4,"n"]]},{"d":"2026-09-16","s":[[90.0,8,"n"]]},{"d":"2026-09-17","s":[[92.5,4,"n"],[92.5,3,"n"]]},{"d":"2026-09-21","s":[[90.0,3,"n"]]},{"d":"2026-09-24","s":[[90.0,3,"n"],[70.0,7,"n"]]},{"d":"2026-09-28","s":[[80.0,9,"n"]]},{"d":"2026-10-07","s":[[90.0,5,"n"]]}]},{"n":"Développé couché barre","ss":[{"d":"2026-07-06","s":[[60.0,4,"n"],[80.0,2,"n"],[90.0,0,"n"]]},{"d":"2026-07-10","s":[[60.0,2,"n"],[80.0,1,"n"],[90.0,1,"n"]]},{"d":"2026-07-13","s":[[60.0,4,"n"],[80.0,1,"n"],[80.0,3,"n"]]},{"d":"2026-07-28","s":[[60.0,2,"n"],[80.0,3,"n"],[90.0,0,"n"]]}]},{"n":"Écarté poulie debout","ss":[{"d":"2026-03-13","s":[[40.0,11,"n"],[40.0,10,"n"],[40.0,12,"n"]]},{"d":"2026-03-20","s":[[50.0,8,"n"],[50.0,10,"n"],[50.0,9,"n"]]},{"d":"2026-04-10","s":[[50.0,8,"n"],[50.0,10,"n"],[50.0,9,"n"]]},{"d":"2026-07-02","s":[[18.0,11,"n"],[18.0,10,"n"]]}]},{"n":"Pompes lestées","ss":[{"d":"2026-06-01","s":[[10.0,15,"n"],[20.0,12,"n"],[20.0,12,"n"]]},{"d":"2026-06-07","s":[[9.0,19,"n"],[9.0,20,"n"],[9.0,22,"n"]]},{"d":"2026-06-21","s":[[23.0,12,"n"],[23.0,13,"n"],[23.0,8,"n"]]}]},{"n":"Chest press incliné machine","ss":[{"d":"2026-08-06","s":[[70.0,8,"n"]]},{"d":"2026-08-14","s":[[80.0,5,"n"],[80.0,6,"n"]]},{"d":"2026-08-18","s":[[80.0,7,"n"],[80.0,7,"n"]]}]},{"n":"Écarté","ss":[{"d":"2026-07-03","s":[[14.0,10,"n"],[14.0,11,"n"],[14.0,10,"n"]]}]}]},{"g":"Dos","ex":[{"n":"Tirage vertical","ss":[{"d":"2026-03-04","s":[[45.0,8,"n"],[45.0,8,"n"],[45.0,12,"n"]]},{"d":"2026-03-10","s":[[45.0,12,"n"],[50.0,10,"n"],[50.0,9,"n"]]},{"d":"2026-03-13","s":[[50.0,8,"n"],[55.0,9,"n"],[55.0,7,"n"]]},{"d":"2026-03-18","s":[[50.0,10,"n"],[55.0,11,"n"],[55.0,8,"n"]]},{"d":"2026-03-20","s":[[50.0,10,"n"],[55.0,9,"n"],[55.0,10,"n"]]},{"d":"2026-03-25","s":[[55.0,8,"n"],[57.5,10,"n"],[57.5,9,"n"]]},{"d":"2026-04-03","s":[[55.0,10,"n"],[60.0,9,"n"],[60.0,8,"n"]]},{"d":"2026-04-08","s":[[60.0,9,"n"],[60.0,10,"n"],[65.0,8,"n"]]},{"d":"2026-04-29","s":[[60.0,8,"n"],[65.0,8,"n"],[65.0,6,"n"]]},{"d":"2026-05-05","s":[[55.0,8,"n"],[65.0,8,"n"],[50.0,12,"n"]]},{"d":"2026-06-29","s":[[65.0,9,"n"],[70.0,7,"n"],[70.0,8,"n"]]},{"d":"2026-07-06","s":[[65.0,8,"n"],[75.0,7,"n"],[75.0,7,"n"]]},{"d":"2026-07-08","s":[[75.0,7,"n"],[75.0,8,"n"],[50.0,7,"w"]]},{"d":"2026-07-10","s":[[75.0,8,"n"],[80.0,7,"n"]]},{"d":"2026-07-13","s":[[80.0,6,"n"],[90.0,5,"n"]]},{"d":"2026-07-24","s":[[75.0,7,"n"],[70.0,6,"n"]]},{"d":"2026-07-28","s":[[90.0,6,"n"],[80.0,8,"n"],[65.0,8,"w"]]},{"d":"2026-08-03","s":[[85.0,6,"n"],[85.0,5,"n"],[75.0,6,"w"]]},{"d":"2026-08-06","s":[[85.0,8,"n"],[90.0,6,"n"]]},{"d":"2026-08-14","s":[[90.0,7,"n"],[90.0,5,"n"],[50.0,6,"w"]]},{"d":"2026-08-18","s":[[80.0,6,"n"],[90.0,5,"n"],[45.0,7,"w"]]},{"d":"2026-09-07","s":[[80.0,6,"n"],[80.0,5,"n"],[50.0,10,"w"]]},{"d":"2026-09-10","s":[[85.0,6,"n"],[90.0,5,"n"],[40.0,10,"w"]]},{"d":"2026-09-14","s":[[90.0,3,"n"],[85.0,4,"n"],[50.0,10,"w"],[90.0,4,"n"]]},{"d":"2026-09-17","s":[[90.0,4,"n"],[80.0,5,"n"],[50.0,10,"w"]]},{"d":"2026-09-21","s":[[80.0,6,"n"],[80.0,5,"n"],[50.0,8,"w"]]},{"d":"2026-09-24","s":[[80.0,7,"n"],[85.0,8,"n"],[45.0,8,"w"]]},{"d":"2026-09-28","s":[[85.0,6,"n"],[85.0,7,"n"],[70.0,8,"w"]]},{"d":"2026-10-07","s":[[85.0,7,"n"],[85.0,6,"n"],[50.0,5,"w"]]},{"d":"2026-10-12","s":[[85.0,8,"n"],[85.0,8,"n"],[50.0,8,"w"]]},{"d":"2026-10-14","s":[[85.0,9,"n"],[85.0,7,"n"],[50.0,10,"w"]]},{"d":"2026-11-02","s":[[85.0,6,"n"],[85.0,5,"n"],[50.0,5,"w"]]},{"d":"2026-11-05","s":[[90.0,6,"n"],[90.0,6,"n"],[40.0,8,"w"]]},{"d":"2026-11-09","s":[[90.0,6,"n"],[90.0,7,"n"],[50.0,8,"w"]]},{"d":"2026-11-13","s":[[90.0,8,"n"],[90.0,8,"n"],[60.0,8,"w"]]}]},{"n":"T-bar row machine","ss":[{"d":"2026-06-30","s":[[35.0,11,"n"],[45.0,8,"n"],[55.0,7,"n"]]},{"d":"2026-07-06","s":[[50.0,8,"n"],[50.0,9,"n"]]},{"d":"2026-07-10","s":[[55.0,8,"n"]]},{"d":"2026-07-13","s":[[55.0,7,"n"],[50.0,8,"n"]]},{"d":"2026-07-24","s":[[60.0,6,"n"],[60.0,6,"n"]]},{"d":"2026-07-28","s":[[60.0,7,"n"],[60.0,8,"n"]]},{"d":"2026-08-03","s":[[40.0,7,"n"]]},{"d":"2026-08-06","s":[[65.0,6,"n"],[65.0,6,"n"]]},{"d":"2026-08-14","s":[[65.0,7,"n"],[65.0,6,"n"]]},{"d":"2026-08-18","s":[[70.0,4,"n"],[55.0,7,"n"]]},{"d":"2026-09-07","s":[[50.0,6,"n"],[55.0,7,"n"]]},{"d":"2026-09-10","s":[[60.0,5,"n"],[50.0,12,"n"]]},{"d":"2026-09-14","s":[[55.0,8,"n"],[60.0,8,"n"]]},{"d":"2026-09-17","s":[[55.0,7,"n"],[55.0,7,"n"]]},{"d":"2026-09-21","s":[[55.0,7,"n"],[60.0,5,"n"]]}]},{"n":"Rowing assis dos droit","ss":[{"d":"2026-03-20","s":[[48.0,13,"n"],[55.0,10,"n"],[55.0,10,"n"]]},{"d":"2026-03-25","s":[[55.0,10,"n"],[61.0,11,"n"],[61.0,10,"n"]]},{"d":"2026-04-03","s":[[55.0,12,"n"],[61.0,11,"n"],[61.0,10,"n"]]},{"d":"2026-04-08","s":[[61.0,10,"n"],[61.0,9,"n"],[61.0,9,"n"]]},{"d":"2026-04-10","s":[[68.0,9,"n"],[68.0,7,"n"],[61.0,7,"n"]]},{"d":"2026-06-10","s":[[68.0,9,"n"],[68.0,5,"n"]]}]},{"n":"Rowing assis prise large","ss":[{"d":"2026-09-24","s":[[40.0,8,"n"],[40.0,10,"n"]]},{"d":"2026-09-28","s":[[100.0,8,"n"],[100.0,9,"n"]]},{"d":"2026-10-07","s":[[100.0,7,"n"],[100.0,6,"n"]]},{"d":"2026-10-14","s":[[110.0,6,"n"]]},{"d":"2026-11-02","s":[[100.0,7,"n"],[100.0,8,"n"]]},{"d":"2026-11-04","s":[[50.0,10,"n"]]},{"d":"2026-11-09","s":[[110.0,7,"n"],[110.0,6,"n"]]},{"d":"2026-11-13","s":[[110.0,5,"n"],[110.0,9,"n"]]}]},{"n":"Tirage élastique à genoux (1 bras)","ss":[{"d":"2026-03-01","s":[[13.0,20,"n"],[13.0,20,"n"],[13.0,20,"n"]]},{"d":"2026-05-30","s":[[22.0,12,"n"],[22.0,20,"n"],[22.0,12,"n"]]},{"d":"2026-06-05","s":[[26.0,10,"n"],[26.0,10,"n"]]},{"d":"2026-06-14","s":[[23.0,11,"n"],[23.0,12,"n"],[23.0,11,"n"]]},{"d":"2026-07-21","s":[[26.0,10,"n"],[25.0,8,"n"]]}]},{"n":"Tractions lestées","ss":[{"d":"2026-04-10","s":[[10.0,6,"n"],[10.0,6,"n"],[10.0,6,"n"]]},{"d":"2026-05-26","s":[[15.0,6,"n"],[15.0,6,"n"]]},{"d":"2026-05-28","s":[[15.0,6,"n"],[15.0,7,"n"]]},{"d":"2026-06-05","s":[[15.0,7,"n"],[17.0,6,"n"]]},{"d":"2026-06-10","s":[[20.0,7,"n"],[20.0,6,"n"]]}]},{"n":"Low row machine","ss":[{"d":"2026-04-29","s":[[40.0,11,"n"],[42.5,11,"n"],[47.5,8,"n"]]},{"d":"2026-07-08","s":[[20.0,8,"w"],[50.0,10,"n"],[55.0,8,"n"]]},{"d":"2026-07-10","s":[[55.0,8,"n"]]},{"d":"2026-08-18","s":[[60.0,6,"n"],[60.0,8,"n"]]},{"d":"2026-11-04","s":[[60.0,10,"n"]]}]},{"n":"Rowing assis machine","ss":[{"d":"2026-03-04","s":[[48.0,11,"n"]]},{"d":"2026-03-10","s":[[45.0,9,"n"],[40.0,11,"n"],[40.0,10,"n"]]},{"d":"2026-03-18","s":[[45.0,8,"n"],[40.0,12,"n"],[40.0,12,"n"]]}]},{"n":"Pull-over poulie","ss":[{"d":"2026-03-01","s":[[13.0,20,"n"]]},{"d":"2026-06-05","s":[[26.0,8,"n"],[26.0,12,"n"]]}]},{"n":"Rowing poulie 1 bras","ss":[{"d":"2026-07-21","s":[[31.0,12,"n"],[31.0,15,"n"]]}]},{"n":"Rowing haltère 1 bras","ss":[{"d":"2026-06-30","s":[[35.0,6,"n"],[35.0,8,"n"]]}]}]},{"g":"Épaules","ex":[{"n":"Élévation latérale poulie","ss":[{"d":"2026-03-04","s":[[10.0,12,"n"]]},{"d":"2026-03-24","s":[[5.0,15,"n"],[7.5,15,"n"],[7.5,12,"n"]]},{"d":"2026-04-01","s":[[7.5,10,"n"],[7.5,11,"n"],[7.5,10,"n"]]},{"d":"2026-04-07","s":[[5.0,10,"n"],[10.0,10,"n"],[10.0,12,"n"]]},{"d":"2026-04-28","s":[[7.5,12,"n"],[10.0,10,"n"],[10.0,10,"n"]]},{"d":"2026-06-09","s":[[8.0,10,"n"],[5.0,18,"n"],[10.0,10,"n"]]},{"d":"2026-06-19","s":[[10.0,11,"n"],[12.0,11,"n"],[12.0,10,"n"]]},{"d":"2026-07-05","s":[[10.0,13,"n"],[12.0,14,"n"],[13.0,11,"n"]]},{"d":"2026-07-19","s":[[14.0,15,"n"],[20.0,14,"n"]]},{"d":"2026-07-24","s":[[15.0,8,"n"],[15.0,8,"n"]]},{"d":"2026-07-30","s":[[21.0,8,"n"],[23.0,8,"n"]]},{"d":"2026-08-02","s":[[23.0,7,"n"],[23.0,6,"n"]]},{"d":"2026-08-05","s":[[23.0,8,"n"],[23.0,8,"n"]]},{"d":"2026-08-23","s":[[22.0,7,"n"],[23.0,8,"n"]]},{"d":"2026-08-29","s":[[20.0,8,"n"],[22.0,6,"n"]]},{"d":"2026-08-30","s":[[23.0,6,"n"]]},{"d":"2026-09-09","s":[[15.0,10,"n"],[20.0,6,"n"]]},{"d":"2026-09-17","s":[[15.0,8,"n"]]},{"d":"2026-09-24","s":[[15.0,9,"n"],[16.25,6,"n"]]},{"d":"2026-09-28","s":[[16.25,8,"n"],[16.25,8,"n"]]},{"d":"2026-09-30","s":[[17.5,6,"n"]]},{"d":"2026-10-08","s":[[17.5,7,"n"],[20.0,6,"n"]]},{"d":"2026-10-11","s":[[18.0,7,"n"]]},{"d":"2026-10-15","s":[[20.0,8,"n"],[20.0,5,"n"]]},{"d":"2026-10-26","s":[[20.0,8,"n"],[20.0,8,"n"]]},{"d":"2026-11-02","s":[[20.0,5,"n"],[20.0,4,"n"]]},{"d":"2026-11-09","s":[[20.0,4,"n"],[20.0,4,"n"]]},{"d":"2026-11-12","s":[[20.0,8,"n"],[22.5,5,"n"]]},{"d":"2026-11-13","s":[[17.5,4,"n"],[22.5,4,"n"]]}]},{"n":"Développé épaules machine","ss":[{"d":"2026-03-13","s":[[54.0,11,"n"],[63.0,10,"n"],[72.0,8,"n"]]},{"d":"2026-03-20","s":[[54.0,9,"n"],[54.0,10,"n"],[54.0,10,"n"]]},{"d":"2026-04-10","s":[[63.0,10,"n"],[72.0,8,"n"],[72.0,9,"n"]]},{"d":"2026-05-26","s":[[63.0,11,"n"],[72.0,8,"n"]]},{"d":"2026-06-10","s":[[72.0,11,"n"],[81.0,8,"n"],[81.0,9,"n"]]},{"d":"2026-06-29","s":[[81.0,6,"n"],[72.0,9,"n"]]},{"d":"2026-07-08","s":[[81.0,8,"n"],[90.0,7,"n"]]},{"d":"2026-07-10","s":[[90.0,7,"n"],[90.0,7,"n"]]},{"d":"2026-07-13","s":[[90.0,6,"n"],[90.0,7,"n"]]},{"d":"2026-07-28","s":[[99.0,6,"n"],[99.0,4,"n"]]},{"d":"2026-08-03","s":[[99.0,5,"n"],[90.0,4,"n"]]},{"d":"2026-08-14","s":[[99.0,4,"n"]]},{"d":"2026-08-18","s":[[99.0,4,"n"]]},{"d":"2026-09-07","s":[[99.0,6,"n"],[99.0,4,"n"]]},{"d":"2026-09-10","s":[[99.0,6,"n"],[99.0,5,"n"]]},{"d":"2026-09-14","s":[[99.0,7,"n"],[99.0,3,"n"]]},{"d":"2026-09-17","s":[[99.0,9,"n"],[108.0,6,"n"]]},{"d":"2026-09-21","s":[[72.0,8,"n"]]},{"d":"2026-09-24","s":[[108.0,4,"n"],[108.0,7,"n"]]},{"d":"2026-10-07","s":[[108.0,4,"n"],[108.0,3,"n"]]},{"d":"2026-10-12","s":[[108.0,5,"n"]]},{"d":"2026-11-02","s":[[108.0,6,"n"],[108.0,4,"n"]]},{"d":"2026-11-05","s":[[108.0,3,"d"],[90.0,5,"d"]]},{"d":"2026-11-09","s":[[108.0,5,"n"],[108.0,7,"n"]]},{"d":"2026-11-13","s":[[108.0,8,"n"],[117.0,4,"n"]]}]},{"n":"Développé épaules haltères","ss":[{"d":"2026-04-23","s":[[12.0,10,"n"],[12.0,12,"n"],[12.0,10,"n"]]},{"d":"2026-05-11","s":[[12.0,12,"n"],[12.0,13,"n"],[12.0,10,"n"]]},{"d":"2026-06-20","s":[[14.0,12,"n"],[14.0,15,"n"],[14.0,16,"n"]]},{"d":"2026-06-26","s":[[14.0,12,"n"],[14.0,15,"n"]]}]},{"n":"Développé épaules machine (assis)","ss":[{"d":"2026-03-05","s":[[44.0,10,"n"],[54.0,8,"n"],[44.0,7,"n"]]},{"d":"2026-03-06","s":[[44.0,10,"n"],[44.0,12,"n"],[44.0,13,"n"]]}]},{"n":"Élévation latérale haltères","ss":[{"d":"2026-04-23","s":[[6.0,8,"n"],[6.0,10,"n"],[6.0,8,"n"]]},{"d":"2026-06-27","s":[[8.0,10,"n"],[8.0,12,"n"],[8.0,15,"n"]]}]},{"n":"Face pull corde","ss":[{"d":"2026-03-01","s":[[13.0,28,"n"],[13.0,25,"n"],[13.0,25,"n"]]}]}]},{"g":"Biceps","ex":[{"n":"Curl poulie 1 bras","ss":[{"d":"2026-03-13","s":[[10.0,8,"n"],[22.5,12,"n"]]},{"d":"2026-05-24","s":[[28.0,14,"n"],[28.0,10,"n"],[28.0,10,"n"]]},{"d":"2026-05-30","s":[[23.0,15,"n"],[23.0,12,"n"],[23.0,14,"n"]]},{"d":"2026-06-01","s":[[17.0,10,"n"],[17.0,8,"n"],[15.0,10,"n"]]},{"d":"2026-06-04","s":[[26.0,15,"n"],[26.0,11,"n"],[26.0,14,"n"]]},{"d":"2026-06-05","s":[[26.0,12,"n"],[26.0,12,"n"]]},{"d":"2026-06-09","s":[[23.0,12,"n"],[23.0,12,"n"]]},{"d":"2026-06-17","s":[[23.0,17,"n"],[23.0,14,"n"],[23.0,12,"n"]]},{"d":"2026-06-19","s":[[27.5,7,"n"],[27.5,7,"n"],[26.0,8,"n"]]},{"d":"2026-06-27","s":[[27.5,9,"n"],[27.5,11,"n"]]},{"d":"2026-07-02","s":[[27.5,12,"n"],[27.5,9,"n"]]},{"d":"2026-07-18","s":[[30.0,11,"n"],[30.0,12,"n"]]},{"d":"2026-07-21","s":[[31.0,12,"n"],[31.0,14,"n"]]},{"d":"2026-07-30","s":[[34.5,8,"n"],[34.5,7,"n"]]},{"d":"2026-08-02","s":[[37.0,5,"n"],[37.0,5,"n"]]},{"d":"2026-08-05","s":[[37.0,6,"n"],[37.0,7,"n"]]},{"d":"2026-08-07","s":[[37.0,6,"n"],[37.0,5,"n"]]},{"d":"2026-08-12","s":[[31.0,6,"n"],[34.0,8,"n"]]},{"d":"2026-08-15","s":[[37.0,6,"n"],[35.5,7,"n"]]},{"d":"2026-08-23","s":[[37.0,6,"n"],[37.0,4,"n"]]},{"d":"2026-08-29","s":[[37.0,5,"n"],[35.5,4,"n"]]},{"d":"2026-09-05","s":[[31.0,9,"n"],[32.5,6,"n"]]},{"d":"2026-10-26","s":[[31.0,10,"n"],[32.5,7,"n"]]}]},{"n":"Curl haltères alterné","ss":[{"d":"2026-03-08","s":[[13.0,15,"n"],[13.0,12,"n"],[13.0,15,"n"]]},{"d":"2026-03-22","s":[[14.0,20,"n"],[14.0,16,"n"]]},{"d":"2026-04-17","s":[[16.0,8,"n"],[16.0,8,"n"],[16.0,8,"n"]]},{"d":"2026-04-22","s":[[16.0,10,"n"],[16.0,10,"n"],[16.0,10,"n"]]},{"d":"2026-06-20","s":[[14.0,15,"n"],[14.0,18,"n"],[14.0,14,"n"]]},{"d":"2026-08-14","s":[[20.0,11,"n"],[20.0,12,"n"]]},{"d":"2026-09-07","s":[[20.0,6,"n"],[20.0,4,"n"]]},{"d":"2026-09-14","s":[[22.5,4,"n"],[22.0,3,"n"]]},{"d":"2026-09-17","s":[[20.0,7,"n"],[22.5,3,"n"]]}]},{"n":"Curl marteau","ss":[{"d":"2026-03-20","s":[[14.0,12,"n"],[16.0,12,"n"]]},{"d":"2026-03-22","s":[[14.0,30,"n"],[14.0,33,"n"],[14.0,31,"n"]]},{"d":"2026-04-10","s":[[20.0,15,"n"],[20.0,12,"n"]]},{"d":"2026-04-17","s":[[16.0,25,"n"],[16.0,30,"n"],[16.0,30,"n"]]},{"d":"2026-04-22","s":[[16.0,24,"n"],[16.0,18,"n"],[16.0,20,"n"]]},{"d":"2026-05-11","s":[[21.0,11,"n"],[21.0,13,"n"]]},{"d":"2026-05-30","s":[[22.0,8,"n"],[22.0,12,"n"]]},{"d":"2026-07-05","s":[[24.0,15,"n"],[29.0,7,"n"],[27.5,6,"n"]]}]},{"n":"Curl pupitre machine","ss":[{"d":"2026-04-03","s":[[30.0,6,"n"],[30.0,9,"n"]]},{"d":"2026-04-08","s":[[40.0,7,"n"],[40.0,8,"n"],[40.0,7,"n"]]},{"d":"2026-04-29","s":[[50.0,8,"n"],[50.0,7,"n"],[50.0,8,"n"]]},{"d":"2026-05-05","s":[[40.0,8,"n"],[40.0,6,"n"],[40.0,3,"n"]]},{"d":"2026-05-28","s":[[50.0,10,"n"],[50.0,7,"n"]]},{"d":"2026-06-10","s":[[70.0,8,"n"],[70.0,8,"n"]]},{"d":"2026-07-08","s":[[80.0,10,"n"],[90.0,8,"n"]]},{"d":"2026-07-24","s":[[80.0,8,"n"],[60.0,10,"n"]]}]},{"n":"Curl incliné haltères","ss":[{"d":"2026-09-21","s":[[15.0,8,"n"],[15.0,7,"n"]]},{"d":"2026-09-24","s":[[17.5,5,"n"],[17.5,4,"n"]]},{"d":"2026-09-28","s":[[17.5,5,"n"],[17.5,3,"n"]]},{"d":"2026-10-07","s":[[17.5,8,"n"]]},{"d":"2026-10-12","s":[[17.5,6,"n"]]},{"d":"2026-11-04","s":[[20.0,4,"n"]]},{"d":"2026-11-09","s":[[17.5,8,"n"],[20.0,5,"n"]]}]},{"n":"Curl poulie","ss":[{"d":"2026-05-07","s":[[23.5,10,"n"],[23.5,18,"n"],[23.5,15,"n"]]},{"d":"2026-05-10","s":[[26.0,10,"n"],[26.0,25,"n"],[26.0,25,"n"]]}]},{"n":"Curl barre EZ","ss":[{"d":"2026-03-06","s":[[27.5,13,"n"]]},{"d":"2026-03-18","s":[[27.5,12,"n"],[32.5,9,"n"],[32.5,12,"n"]]},{"d":"2026-03-25","s":[[32.5,10,"n"],[32.5,11,"n"]]}]},{"n":"Curl biceps","ss":[{"d":"2026-04-23","s":[[10.0,10,"n"],[10.0,14,"n"],[10.0,14,"n"]]}]},{"n":"Curl marteau pupitre corde","ss":[{"d":"2026-03-05","s":[[45.0,13,"n"]]},{"d":"2026-06-17","s":[[23.0,14,"n"],[23.0,14,"n"]]}]},{"n":"Los Curlos","ss":[{"d":"2026-10-31","s":[[18.0,8,"n"],[19.0,7,"n"],[19.0,5,"n"]]}]},{"n":"Curl marteau poulie","ss":[{"d":"2026-06-11","s":[[23.0,12,"n"],[23.0,15,"n"]]}]},{"n":"Curl marteau assis","ss":[{"d":"2026-03-06","s":[[14.0,11,"n"],[14.0,13,"n"]]}]}]},{"g":"Triceps","ex":[{"n":"Extension triceps corde (1 bras)","ss":[{"d":"2026-04-24","s":[[10.5,12,"n"],[11.0,11,"n"]]},{"d":"2026-04-29","s":[[10.0,14,"n"],[11.5,8,"n"],[11.5,9,"n"]]},{"d":"2026-05-05","s":[[15.0,12,"n"],[15.0,9,"n"]]},{"d":"2026-05-11","s":[[11.0,12,"n"],[13.0,8,"n"],[13.0,6,"n"]]},{"d":"2026-05-13","s":[[12.0,11,"n"],[14.0,7,"n"],[13.6,10,"n"]]},{"d":"2026-05-24","s":[[13.0,10,"n"],[13.0,12,"n"],[13.0,15,"n"]]},{"d":"2026-05-30","s":[[15.0,6,"n"],[15.0,7,"n"],[15.0,5,"n"]]},{"d":"2026-06-01","s":[[13.0,10,"n"],[13.0,9,"n"],[13.0,9,"n"]]},{"d":"2026-06-05","s":[[14.0,8,"n"],[14.0,6,"n"],[14.0,5,"n"]]},{"d":"2026-06-09","s":[[15.0,7,"n"],[15.0,6,"n"],[14.0,6,"n"]]},{"d":"2026-06-14","s":[[18.0,7,"n"],[18.0,7,"n"],[18.0,6,"n"]]},{"d":"2026-06-17","s":[[19.0,7,"n"],[19.0,6,"n"],[19.0,4,"n"]]},{"d":"2026-06-21","s":[[19.0,8,"n"],[20.0,5,"n"],[19.5,6,"n"]]},{"d":"2026-06-26","s":[[19.0,7,"n"],[19.5,7,"n"],[19.5,7,"n"]]},{"d":"2026-07-02","s":[[16.0,10,"n"],[20.0,8,"n"],[20.0,5,"n"]]},{"d":"2026-07-05","s":[[18.0,9,"n"],[20.0,10,"n"],[19.0,9,"n"]]},{"d":"2026-07-07","s":[[18.0,12,"n"],[18.0,8,"n"],[18.0,7,"n"]]},{"d":"2026-07-12","s":[[20.0,9,"n"],[21.0,5,"n"]]},{"d":"2026-07-18","s":[[18.0,10,"n"],[22.0,7,"n"],[12.0,8,"w"]]},{"d":"2026-07-26","s":[[20.0,8,"n"],[21.0,6,"n"],[16.0,8,"w"]]},{"d":"2026-07-30","s":[[21.0,8,"n"],[22.5,8,"n"],[15.0,6,"w"],[24.5,6,"n"]]},{"d":"2026-08-01","s":[[25.0,6,"n"],[25.0,5,"n"],[16.0,8,"w"]]},{"d":"2026-08-05","s":[[24.0,7,"n"],[24.0,9,"n"],[12.0,8,"w"]]},{"d":"2026-08-07","s":[[25.0,7,"n"],[25.0,7,"n"],[16.0,8,"w"]]},{"d":"2026-08-12","s":[[21.0,8,"n"],[23.0,7,"n"]]},{"d":"2026-08-15","s":[[25.0,7,"n"],[25.0,7,"n"]]},{"d":"2026-08-23","s":[[23.0,6,"n"],[23.0,6,"n"],[16.0,8,"w"]]},{"d":"2026-08-29","s":[[23.0,5,"n"],[22.0,7,"n"],[12.0,10,"w"]]},{"d":"2026-08-30","s":[[23.0,7,"n"],[23.0,6,"n"],[14.0,18,"w"]]},{"d":"2026-09-05","s":[[23.0,5,"n"],[23.0,8,"n"],[16.0,10,"w"]]},{"d":"2026-09-07","s":[[35.0,8,"n"],[35.0,8,"n"]]},{"d":"2026-09-14","s":[[40.0,7,"n"],[40.0,5,"n"]]},{"d":"2026-09-16","s":[[40.0,8,"n"]]},{"d":"2026-09-17","s":[[40.0,8,"n"]]},{"d":"2026-09-21","s":[[40.0,10,"n"],[45.0,5,"n"]]},{"d":"2026-09-24","s":[[45.0,7,"n"],[45.0,7,"n"]]},{"d":"2026-09-28","s":[[45.0,7,"n"],[45.0,5,"n"]]},{"d":"2026-10-07","s":[[40.0,8,"n"]]},{"d":"2026-10-11","s":[[24.0,7,"n"],[24.0,6,"n"]]},{"d":"2026-10-26","s":[[18.0,10,"n"],[22.0,9,"n"],[22.0,5,"n"],[22.0,4,"n"]]},{"d":"2026-10-31","s":[[23.0,4,"n"],[22.0,7,"n"],[22.0,6,"n"]]},{"d":"2026-11-02","s":[[40.0,6,"n"],[45.0,6,"n"]]},{"d":"2026-11-09","s":[[45.0,9,"n"],[45.0,7,"n"],[50.0,6,"n"],[50.0,6,"n"]]},{"d":"2026-11-13","s":[[50.0,5,"n"],[50.0,4,"n"],[50.0,3,"n"],[45.0,8,"n"]]}]},{"n":"Extension triceps poulie","ss":[{"d":"2026-03-01","s":[[13.0,23,"n"],[13.0,25,"n"],[13.0,24,"n"],[13.0,22,"n"]]},{"d":"2026-03-08","s":[[25.0,16,"n"],[27.0,16,"n"],[27.0,16,"n"],[27.0,17,"n"]]},{"d":"2026-03-14","s":[[21.0,15,"n"],[21.0,16,"n"],[21.0,16,"n"]]},{"d":"2026-03-22","s":[[26.0,15,"n"],[26.0,14,"n"],[26.0,12,"n"],[26.0,12,"n"]]},{"d":"2026-04-08","s":[[55.0,8,"n"]]},{"d":"2026-04-10","s":[[45.0,12,"n"],[50.0,10,"n"],[50.0,13,"n"]]},{"d":"2026-04-17","s":[[38.0,15,"n"],[48.0,13,"n"],[48.0,11,"n"]]},{"d":"2026-04-22","s":[[26.0,30,"n"]]},{"d":"2026-05-07","s":[[26.0,12,"n"],[26.0,16,"n"],[26.0,8,"n"]]},{"d":"2026-05-10","s":[[25.0,13,"n"],[25.0,13,"n"],[25.0,12,"n"],[25.0,15,"n"]]},{"d":"2026-05-14","s":[[21.0,13,"n"],[22.0,14,"n"],[24.0,14,"n"],[24.0,12,"n"]]},{"d":"2026-06-01","s":[[23.0,14,"n"],[23.0,16,"n"],[25.0,14,"n"]]},{"d":"2026-06-02","s":[[26.0,12,"n"],[26.0,10,"n"],[26.0,7,"n"]]},{"d":"2026-06-04","s":[[26.0,13,"n"],[26.0,10,"n"],[26.0,9,"n"]]},{"d":"2026-06-06","s":[[26.0,9,"n"],[26.0,10,"n"]]},{"d":"2026-06-09","s":[[24.0,9,"n"],[24.0,4,"n"],[24.0,7,"n"]]},{"d":"2026-06-10","s":[[60.0,5,"n"],[55.0,7,"n"],[50.0,9,"n"]]},{"d":"2026-07-19","s":[[26.0,12,"n"],[28.0,7,"n"]]}]},{"n":"Extension triceps au-dessus de la tête","ss":[{"d":"2026-03-01","s":[[13.0,20,"n"],[13.0,20,"n"],[13.0,23,"n"]]},{"d":"2026-03-04","s":[[40.0,13,"n"],[35.0,12,"n"]]},{"d":"2026-03-06","s":[[35.0,15,"n"],[35.0,15,"n"],[40.0,13,"n"]]},{"d":"2026-03-08","s":[[30.0,15,"n"],[30.0,27,"n"],[30.0,21,"n"],[30.0,22,"n"]]},{"d":"2026-03-13","s":[[35.0,10,"n"],[35.0,10,"n"],[35.0,13,"n"]]},{"d":"2026-03-14","s":[[21.0,10,"n"]]},{"d":"2026-03-18","s":[[40.0,13,"n"],[42.5,8,"n"],[42.5,10,"n"]]},{"d":"2026-03-20","s":[[35.0,12,"n"],[42.5,10,"n"]]},{"d":"2026-03-22","s":[[19.0,16,"n"]]},{"d":"2026-03-25","s":[[40.0,11,"n"],[45.0,9,"n"]]},{"d":"2026-04-03","s":[[40.0,10,"n"],[40.0,10,"n"]]},{"d":"2026-04-08","s":[[45.0,8,"n"],[45.0,8,"n"]]},{"d":"2026-04-17","s":[[16.0,16,"n"],[18.0,20,"n"]]},{"d":"2026-04-29","s":[[45.0,7,"n"],[45.0,7,"n"],[45.0,7,"n"]]}]},{"n":"Extension triceps élastique (1 bras)","ss":[{"d":"2026-05-07","s":[[16.0,9,"n"],[16.0,9,"n"],[16.0,9,"n"]]},{"d":"2026-05-10","s":[[18.0,6,"n"],[17.0,7,"n"],[17.0,6,"n"]]},{"d":"2026-05-13","s":[[14.0,12,"n"],[17.0,5,"n"],[17.0,10,"n"]]},{"d":"2026-05-30","s":[[19.0,10,"n"],[21.0,5,"n"],[15.0,11,"n"]]},{"d":"2026-06-04","s":[[17.0,8,"n"],[17.0,7,"n"],[17.0,6,"n"]]},{"d":"2026-06-11","s":[[17.0,9,"n"],[17.0,7,"n"],[17.0,7,"n"]]},{"d":"2026-06-17","s":[[18.0,7,"n"],[19.0,7,"n"],[17.0,7,"n"]]},{"d":"2026-06-19","s":[[21.0,8,"n"],[23.0,7,"n"],[23.0,8,"n"]]},{"d":"2026-06-27","s":[[22.0,13,"n"],[24.0,12,"n"],[24.0,13,"n"]]},{"d":"2026-07-03","s":[[24.0,12,"n"],[24.0,8,"n"]]},{"d":"2026-07-09","s":[[25.5,7,"n"]]}]},{"n":"Dips machine assis","ss":[{"d":"2026-03-05","s":[[35.0,10,"n"],[30.0,12,"n"],[30.0,13,"n"]]},{"d":"2026-03-06","s":[[35.0,12,"n"],[40.0,14,"n"],[35.0,17,"n"]]},{"d":"2026-08-03","s":[[108.0,8,"n"]]},{"d":"2026-09-28","s":[[117.0,14,"n"]]},{"d":"2026-11-02","s":[[108.0,10,"n"]]},{"d":"2026-11-04","s":[[117.0,8,"n"]]}]},{"n":"Dips lestés","ss":[{"d":"2026-07-06","s":[[20.0,7,"n"],[20.0,6,"n"]]},{"d":"2026-07-08","s":[[20.0,5,"n"]]},{"d":"2026-07-24","s":[[20.0,8,"n"],[25.0,4,"n"]]}]},{"n":"Pushdown poulie","ss":[{"d":"2026-03-17","s":[[35.0,12,"n"],[40.0,11,"n"],[40.0,9,"n"]]}]}]},{"g":"Avant-bras","ex":[{"n":"Curl inversé poulie 1 bras","ss":[{"d":"2026-07-09","s":[[27.5,15,"n"],[29.0,11,"n"]]},{"d":"2026-07-19","s":[[30.0,15,"n"],[30.0,13,"n"]]},{"d":"2026-07-21","s":[[36.0,10,"n"],[36.0,8,"n"]]},{"d":"2026-07-30","s":[[37.5,8,"n"],[39.5,8,"n"]]},{"d":"2026-08-02","s":[[39.5,8,"n"],[39.5,10,"n"]]},{"d":"2026-08-05","s":[[40.0,6,"n"],[40.0,7,"n"]]},{"d":"2026-08-07","s":[[40.0,8,"n"],[40.0,10,"n"]]},{"d":"2026-08-29","s":[[37.0,10,"n"],[37.0,7,"n"]]},{"d":"2026-09-17","s":[[45.0,6,"n"]]}]},{"n":"Curl prise inversée","ss":[{"d":"2026-05-13","s":[[26.0,13,"n"],[26.0,16,"n"],[26.0,13,"n"]]},{"d":"2026-06-04","s":[[26.0,20,"n"],[26.0,23,"n"],[26.0,21,"n"]]},{"d":"2026-06-05","s":[[26.0,20,"n"]]},{"d":"2026-06-09","s":[[24.0,18,"n"],[24.0,21,"n"]]}]},{"n":"Cat curl","ss":[{"d":"2026-05-14","s":[[24.0,15,"n"],[24.0,31,"n"],[24.0,26,"n"]]},{"d":"2026-06-02","s":[[26.0,25,"n"]]},{"d":"2026-06-21","s":[[23.0,37,"n"],[23.0,40,"n"]]},{"d":"2026-07-10","s":[[92.0,12,"n"]]},{"d":"2026-07-24","s":[[80.0,15,"n"]]},{"d":"2026-08-07","s":[[25.0,8,"n"]]}]},{"n":"Curl prise inversée poulie","ss":[{"d":"2026-03-20","s":[[35.0,8,"n"],[37.5,12,"n"]]},{"d":"2026-05-14","s":[[26.0,12,"n"]]},{"d":"2026-07-10","s":[[65.0,8,"n"]]},{"d":"2026-07-24","s":[[40.0,10,"n"]]},{"d":"2026-08-06","s":[[45.0,8,"n"],[75.0,8,"n"]]}]},{"n":"Curl poignets dos poulie","ss":[{"d":"2026-03-06","s":[[80.0,15,"n"],[88.0,15,"n"],[88.0,14,"n"]]}]},{"n":"Curl poignets poulie","ss":[{"d":"2026-03-08","s":[[27.0,15,"n"]]},{"d":"2026-04-24","s":[[2.0,15,"n"]]}]},{"n":"Curl poignet inversé (1 bras)","ss":[{"d":"2026-06-21","s":[[6.0,12,"n"],[6.0,7,"n"]]}]},{"n":"Curl poignets inversé poulie","ss":[{"d":"2026-08-07","s":[[20.0,8,"n"]]}]}]},{"g":"Quadriceps","ex":[{"n":"Presse à cuisses 45°","ss":[{"d":"2026-03-03","s":[[60.0,7,"n"],[60.0,10,"n"],[60.0,7,"n"]]},{"d":"2026-03-09","s":[[50.0,10,"n"],[50.0,10,"n"]]},{"d":"2026-03-16","s":[[50.0,12,"n"],[50.0,12,"n"]]},{"d":"2026-03-24","s":[[50.0,12,"n"],[60.0,11,"n"],[70.0,10,"n"]]},{"d":"2026-04-01","s":[[80.0,10,"n"],[80.0,11,"n"],[80.0,10,"n"]]},{"d":"2026-04-07","s":[[80.0,10,"n"],[90.0,8,"n"],[90.0,10,"n"]]},{"d":"2026-04-28","s":[[80.0,12,"n"],[80.0,10,"n"],[80.0,10,"n"]]},{"d":"2026-05-04","s":[[80.0,8,"n"],[80.0,8,"n"],[80.0,8,"n"]]},{"d":"2026-05-19","s":[[80.0,10,"n"],[80.0,11,"n"],[80.0,8,"n"]]},{"d":"2026-06-05","s":[[80.0,12,"n"],[90.0,11,"n"],[90.0,12,"n"]]},{"d":"2026-07-08","s":[[80.0,8,"w"],[120.0,8,"n"],[140.0,8,"n"]]},{"d":"2026-07-28","s":[[80.0,6,"w"],[120.0,6,"n"],[150.0,10,"n"]]},{"d":"2026-08-03","s":[[160.0,6,"n"],[160.0,7,"n"]]},{"d":"2026-08-06","s":[[80.0,10,"w"],[160.0,8,"n"],[170.0,5,"n"]]},{"d":"2026-08-14","s":[[80.0,8,"w"],[120.0,6,"n"],[160.0,5,"n"]]},{"d":"2026-08-18","s":[[80.0,5,"w"],[165.0,8,"n"],[170.0,5,"n"]]},{"d":"2026-09-09","s":[[80.0,5,"w"],[120.0,6,"n"],[160.0,7,"n"],[160.0,2,"n"]]},{"d":"2026-09-11","s":[[120.0,3,"w"],[160.0,7,"n"],[160.0,8,"n"]]},{"d":"2026-09-16","s":[[120.0,5,"w"],[170.0,6,"n"],[170.0,7,"n"]]},{"d":"2026-09-18","s":[[120.0,5,"w"],[170.0,7,"n"],[175.0,4,"n"]]},{"d":"2026-09-30","s":[[80.0,8,"w"],[120.0,7,"n"],[120.0,8,"n"]]},{"d":"2026-10-08","s":[[80.0,5,"w"],[130.0,7,"n"],[130.0,8,"n"]]},{"d":"2026-10-15","s":[[80.0,5,"w"],[140.0,7,"n"],[140.0,7,"n"]]},{"d":"2026-11-04","s":[[80.0,5,"w"],[140.0,8,"n"],[150.0,6,"n"]]},{"d":"2026-11-12","s":[[80.0,5,"w"],[150.0,8,"n"],[160.0,6,"n"]]}]},{"n":"Belt squat machine","ss":[{"d":"2026-03-19","s":[[80.0,10,"n"],[80.0,12,"n"],[80.0,12,"n"]]},{"d":"2026-04-01","s":[[80.0,10,"n"],[90.0,12,"n"],[110.0,10,"n"]]},{"d":"2026-04-10","s":[[110.0,8,"n"],[110.0,7,"n"],[110.0,9,"n"]]},{"d":"2026-04-28","s":[[100.0,10,"n"],[110.0,10,"n"],[110.0,8,"n"]]},{"d":"2026-05-04","s":[[110.0,10,"n"],[100.0,12,"n"],[100.0,10,"n"]]},{"d":"2026-05-19","s":[[120.0,9,"n"],[120.0,8,"n"],[120.0,13,"n"]]},{"d":"2026-05-26","s":[[90.0,7,"n"],[120.0,14,"n"],[120.0,12,"n"]]},{"d":"2026-05-27","s":[[120.0,8,"n"],[140.0,12,"n"],[140.0,14,"n"]]},{"d":"2026-06-05","s":[[120.0,8,"n"],[150.0,11,"n"],[150.0,10,"n"]]},{"d":"2026-07-06","s":[[120.0,9,"n"],[150.0,7,"n"]]}]},{"n":"Leg extension","ss":[{"d":"2026-03-11","s":[[50.0,11,"n"],[57.5,12,"n"],[60.0,11,"n"]]},{"d":"2026-03-19","s":[[60.0,10,"n"],[60.0,11,"n"],[60.0,12,"n"]]},{"d":"2026-07-08","s":[[70.0,12,"n"],[90.0,7,"n"],[85.0,6,"n"]]},{"d":"2026-07-10","s":[[80.0,12,"n"],[80.0,12,"n"]]},{"d":"2026-07-13","s":[[90.0,8,"n"],[80.0,12,"n"]]},{"d":"2026-07-24","s":[[80.0,10,"n"],[90.0,10,"n"]]},{"d":"2026-08-03","s":[[95.0,10,"n"],[100.0,11,"n"]]},{"d":"2026-09-23","s":[[95.0,10,"n"]]},{"d":"2026-10-08","s":[[100.0,11,"n"],[102.5,8,"n"]]},{"d":"2026-10-14","s":[[100.0,9,"n"],[102.5,9,"n"]]},{"d":"2026-11-04","s":[[102.5,10,"n"]]},{"d":"2026-11-12","s":[[100.0,8,"n"],[100.0,7,"n"]]}]},{"n":"Squat complet","ss":[{"d":"2026-03-03","s":[[40.0,5,"n"],[50.0,6,"n"],[50.0,7,"n"]]},{"d":"2026-03-09","s":[[40.0,7,"n"],[58.0,7,"n"],[58.0,7,"n"]]},{"d":"2026-03-16","s":[[40.0,7,"n"],[60.0,8,"n"],[60.0,8,"n"]]},{"d":"2026-03-24","s":[[60.0,9,"n"],[65.0,8,"n"],[65.0,9,"n"],[40.0,5,"w"]]},{"d":"2026-04-07","s":[[60.0,8,"n"],[65.0,8,"n"],[70.0,8,"n"],[40.0,10,"w"]]},{"d":"2026-09-23","s":[[80.0,3,"n"],[80.0,6,"n"],[20.0,8,"w"],[20.0,5,"n"]]}]},{"n":"Leg extension unilatérale","ss":[{"d":"2026-08-06","s":[[40.0,10,"n"],[42.5,8,"n"]]},{"d":"2026-08-14","s":[[47.5,6,"n"],[47.5,8,"n"]]},{"d":"2026-08-18","s":[[47.5,8,"n"],[50.0,8,"n"]]},{"d":"2026-09-09","s":[[50.0,10,"n"],[50.0,8,"n"]]},{"d":"2026-09-11","s":[[57.5,9,"n"],[60.0,9,"n"]]},{"d":"2026-09-16","s":[[62.5,6,"n"],[60.0,7,"n"]]},{"d":"2026-09-18","s":[[50.0,8,"n"],[50.0,6,"n"]]},{"d":"2026-09-23","s":[[50.0,5,"n"],[55.0,6,"n"]]},{"d":"2026-09-30","s":[[47.5,10,"n"]]}]},{"n":"Hack squat","ss":[{"d":"2026-06-10","s":[[30.0,10,"n"],[40.0,8,"n"],[40.0,8,"n"]]},{"d":"2026-06-29","s":[[40.0,8,"n"],[70.0,6,"n"],[70.0,8,"n"]]},{"d":"2026-06-30","s":[[40.0,5,"w"],[75.0,7,"n"],[60.0,10,"n"]]}]},{"n":"Goblet squat","ss":[{"d":"2026-05-14","s":[[26.0,10,"n"]]}]}]},{"g":"Ischios & fessiers","ex":[{"n":"Leg curl assis","ss":[{"d":"2026-03-03","s":[[30.0,12,"n"],[30.0,13,"n"],[30.0,12,"n"]]},{"d":"2026-03-09","s":[[35.0,11,"n"],[40.0,10,"n"],[40.0,11,"n"]]},{"d":"2026-03-11","s":[[40.0,12,"n"],[40.0,10,"n"],[42.5,10,"n"]]},{"d":"2026-03-16","s":[[35.0,11,"n"],[42.5,10,"n"],[45.0,10,"n"]]},{"d":"2026-03-19","s":[[37.5,10,"n"],[40.0,8,"n"],[40.0,12,"n"]]},{"d":"2026-03-24","s":[[40.0,12,"n"],[45.0,11,"n"],[42.5,11,"n"]]},{"d":"2026-04-01","s":[[40.0,10,"n"],[45.0,10,"n"],[45.0,7,"n"]]},{"d":"2026-04-07","s":[[42.5,10,"n"],[47.5,9,"n"],[47.5,6,"n"]]},{"d":"2026-04-28","s":[[42.5,12,"n"],[42.5,12,"n"],[45.0,7,"n"]]},{"d":"2026-05-04","s":[[40.0,15,"n"],[42.5,11,"n"]]},{"d":"2026-05-19","s":[[42.5,11,"n"],[45.0,8,"n"],[45.0,7,"n"]]},{"d":"2026-05-26","s":[[45.0,8,"n"],[47.5,8,"n"]]},{"d":"2026-05-27","s":[[47.5,12,"n"],[52.5,8,"n"],[52.5,9,"n"]]},{"d":"2026-06-05","s":[[45.0,8,"n"],[45.0,7,"n"],[47.5,12,"n"]]},{"d":"2026-06-10","s":[[45.0,10,"n"],[50.0,7,"n"],[47.5,9,"n"]]},{"d":"2026-06-29","s":[[50.0,8,"n"],[52.5,8,"n"],[55.0,6,"n"]]},{"d":"2026-07-13","s":[[47.5,10,"n"]]},{"d":"2026-07-24","s":[[50.0,11,"n"],[55.0,6,"n"]]},{"d":"2026-08-03","s":[[55.0,7,"n"]]},{"d":"2026-08-06","s":[[30.0,8,"w"]]},{"d":"2026-08-18","s":[[57.5,8,"n"],[57.5,8,"n"]]},{"d":"2026-09-09","s":[[57.5,8,"n"],[60.0,6,"n"]]},{"d":"2026-09-11","s":[[57.5,3,"n"]]},{"d":"2026-09-18","s":[[55.5,7,"n"]]},{"d":"2026-09-23","s":[[60.0,4,"n"]]},{"d":"2026-09-30","s":[[57.5,8,"n"]]},{"d":"2026-10-08","s":[[57.8,7,"n"],[57.5,8,"n"]]},{"d":"2026-11-04","s":[[57.5,9,"n"]]},{"d":"2026-11-12","s":[[60.0,6,"n"],[60.0,8,"n"]]}]},{"n":"Soulevé de terre jambes tendues","ss":[{"d":"2026-03-11","s":[[50.0,10,"n"],[50.0,8,"n"],[50.0,8,"n"]]},{"d":"2026-03-19","s":[[50.0,11,"n"],[50.0,8,"n"],[50.0,2,"n"]]},{"d":"2026-07-13","s":[[60.0,8,"n"],[90.0,5,"n"]]},{"d":"2026-07-28","s":[[60.0,8,"n"],[100.0,6,"n"]]},{"d":"2026-08-03","s":[[110.0,3,"n"],[110.0,6,"n"]]},{"d":"2026-08-06","s":[[110.0,3,"n"],[100.0,6,"n"]]},{"d":"2026-08-18","s":[[100.0,6,"n"],[105.0,5,"n"]]},{"d":"2026-09-09","s":[[100.0,6,"n"],[100.0,4,"n"],[60.0,5,"w"]]},{"d":"2026-09-11","s":[[100.0,8,"n"],[110.0,5,"n"],[60.0,3,"w"]]},{"d":"2026-09-16","s":[[100.0,8,"n"],[110.0,7,"n"],[60.0,2,"w"]]},{"d":"2026-09-18","s":[[112.5,5,"n"],[100.0,5,"n"],[60.0,5,"w"]]},{"d":"2026-09-23","s":[[115.0,3,"n"],[100.0,7,"n"],[60.0,5,"w"]]},{"d":"2026-09-30","s":[[110.0,8,"n"],[110.0,6,"n"],[60.0,6,"w"]]},{"d":"2026-10-08","s":[[110.0,8,"n"],[115.0,6,"n"],[60.0,5,"w"]]},{"d":"2026-10-14","s":[[115.0,7,"n"],[115.0,4,"n"],[60.0,5,"w"]]},{"d":"2026-10-15","s":[[115.0,6,"n"],[115.0,3,"n"],[60.0,5,"w"]]},{"d":"2026-11-04","s":[[115.0,7,"n"],[115.0,4,"n"],[60.0,6,"w"]]},{"d":"2026-11-12","s":[[120.0,4,"n"],[120.0,5,"n"],[60.0,5,"w"],[100.0,3,"w"]]}]},{"n":"Hip thrust machine","ss":[{"d":"2026-03-03","s":[[40.0,14,"n"],[50.0,14,"n"],[60.0,13,"n"]]},{"d":"2026-03-09","s":[[60.0,10,"n"],[70.0,10,"n"],[65.0,10,"n"]]},{"d":"2026-03-17","s":[[65.0,12,"n"],[70.0,12,"n"],[75.0,13,"n"]]}]},{"n":"Soulevé de terre","ss":[{"d":"2026-07-10","s":[[80.0,7,"n"],[80.0,5,"n"],[60.0,4,"w"]]}]},{"n":"Abduction assis","ss":[{"d":"2026-09-23","s":[[40.0,10,"n"]]},{"d":"2026-10-15","s":[[40.0,8,"n"]]},{"d":"2026-11-12","s":[[50.0,12,"n"]]}]},{"n":"RDL belt","ss":[{"d":"2026-07-06","s":[[60.0,8,"n"]]}]},{"n":"Leg curl allongé","ss":[{"d":"2026-07-06","s":[[35.0,6,"n"]]}]}]},{"g":"Mollets","ex":[{"n":"Mollets assis","ss":[{"d":"2026-03-03","s":[[20.0,12,"n"],[20.0,0,"n"]]},{"d":"2026-03-09","s":[[25.0,12,"n"],[32.5,12,"n"],[37.5,11,"n"]]},{"d":"2026-03-11","s":[[40.0,8,"n"],[40.0,13,"n"],[20.0,10,"n"]]},{"d":"2026-03-17","s":[[40.0,10,"n"],[45.0,12,"n"],[50.0,11,"n"]]},{"d":"2026-03-24","s":[[45.0,12,"n"],[50.0,11,"n"],[55.0,9,"n"]]},{"d":"2026-04-01","s":[[55.0,11,"n"],[55.0,10,"n"],[55.0,8,"n"]]},{"d":"2026-04-07","s":[[60.0,8,"n"],[60.0,10,"n"],[60.0,10,"n"]]},{"d":"2026-05-04","s":[[50.0,13,"n"],[50.0,15,"n"],[50.0,12,"n"]]},{"d":"2026-05-19","s":[[40.0,12,"n"],[50.0,16,"n"]]},{"d":"2026-05-27","s":[[50.0,8,"n"],[50.0,12,"n"]]}]},{"n":"Mollets debout","ss":[{"d":"2026-07-10","s":[[100.0,11,"n"],[110.0,11,"n"]]},{"d":"2026-07-13","s":[[110.0,12,"n"]]},{"d":"2026-07-24","s":[[120.0,11,"n"],[120.0,8,"n"]]},{"d":"2026-09-23","s":[[100.0,8,"n"]]},{"d":"2026-10-08","s":[[100.0,7,"n"]]},{"d":"2026-10-15","s":[[110.0,7,"n"]]},{"d":"2026-11-04","s":[[110.0,10,"n"]]},{"d":"2026-11-12","s":[[110.0,8,"n"],[110.0,8,"n"],[110.0,8,"n"]]}]},{"n":"Mollets 1 jambe","ss":[{"d":"2026-08-03","s":[[40.0,11,"n"],[50.0,7,"n"]]},{"d":"2026-08-06","s":[[55.0,10,"n"],[55.0,5,"n"]]},{"d":"2026-08-14","s":[[60.0,8,"n"],[60.0,6,"n"]]},{"d":"2026-08-18","s":[[60.0,8,"n"],[60.0,8,"n"]]},{"d":"2026-09-09","s":[[60.0,8,"n"],[60.0,5,"n"]]},{"d":"2026-09-18","s":[[50.0,10,"n"]]}]}]},{"g":"Autres","ex":[{"n":"Recline","ss":[{"d":"2026-09-10","s":[[15.0,8,"n"],[15.0,6,"n"]]}]}]}]}</script>
+
 <script>
 (function(){
   var BASE=JSON.parse(document.getElementById('data').textContent);
@@ -133,12 +319,22 @@ button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transpare
   if(!Array.isArray(extras))extras=[];
   function saveExtras(){try{localStorage.setItem(KEY,JSON.stringify(extras))}catch(e){}}
 
-  var state={group:'Pectoraux',q:''};
+  var reduceMq=window.matchMedia('(prefers-reduced-motion: reduce)');
+  function reduced(){return reduceMq.matches}
+  var state={group:'Pectoraux',q:'',anim:true,rig:null,first:true};
+  var hero=document.getElementById('hero');
   function $(id){return document.getElementById(id)}
   function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function fmtD(d){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d);return m?m[3]+'/'+m[2]:d}
   function fmtDY(d){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d);return m?m[3]+'/'+m[2]+'/'+m[1]:d}
   function num(n){return String(Math.round(n*100)/100).replace('.',',')}
+  var GC={'Pectoraux':'#FF5A3C','Dos':'#3DA5FF','Épaules':'#FFB020','Biceps':'#2FD38A','Triceps':'#FF4D8D','Avant-bras':'#22D3C5','Quadriceps':'#B6E64A','Ischios & fessiers':'#FF8A4C','Mollets':'#5CC8FF','Abdos':'#FFD84A'};
+  var GCX=['#FF6B6B','#4DD0E1','#FFCA28','#66BB6A','#FF7043','#29B6F6'];
+  function gc(g){
+    if(GC[g])return GC[g];
+    var h=0;for(var i=0;i<String(g).length;i++)h=(h*31+String(g).charCodeAt(i))>>>0;
+    return GCX[h%GCX.length];
+  }
 
   /* --- modèle --- */
   function build(){
@@ -183,6 +379,16 @@ button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transpare
     return {tops:tops,rec:rec,isPR:isPR,prevBest:prevBest};
   }
 
+  /* --- type de montage 3D d'après le nom de l'exercice --- */
+  function kindOf(n){
+    var s=n.toLowerCase();
+    if(/lest/.test(s))return 'plate';
+    if(/haltère|goblet/.test(s)||/^(écarté|curl marteau|curl marteau assis|curl biceps|los curlos)$/.test(s))return 'dumbbell';
+    if(/barre|smith/.test(s)||/^(squat complet|soulevé de terre)/.test(s))return 'barbell';
+    return 'stack';
+  }
+  var LOAD_LABEL={barbell:'Charger la barre',dumbbell:'Voir l’haltère',plate:'Voir le lest',stack:'Placer la clavette'};
+
   /* --- rendu --- */
   function setHtml(a){
     var t=a[2],txt=num(a[0])+'×'+a[1];
@@ -195,38 +401,78 @@ button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transpare
   function spark(tops,name){
     var pts=tops.slice(-24);
     if(pts.length<2)return '';
-    var W=300,H=44,P=5,ks=pts.map(function(t){return t.kg});
+    var W=300,H=52,P=4,ks=pts.map(function(t){return t.kg});
     var lo=Math.min.apply(null,ks),hi=Math.max.apply(null,ks);
     if(hi===lo){hi+=1;lo-=1}
     function X(i){return P+i*(W-2*P)/(pts.length-1)}
     function Y(k){return H-P-(k-lo)*(H-2*P)/(hi-lo)}
     var line=pts.map(function(t,i){return X(i).toFixed(1)+','+Y(t.kg).toFixed(1)}).join(' ');
+    var area=X(0).toFixed(1)+','+H+' '+line+' '+X(pts.length-1).toFixed(1)+','+H;
     var li=pts.length-1;
     return '<div class="spark"><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Évolution de la charge max, '+esc(name)+' : de '+num(ks[0])+' à '+num(ks[li])+' kg">'+
-      '<polyline points="'+line+'" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>'+
+      '<polygon class="area" points="'+area+'"/>'+
+      '<polyline class="line" pathLength="1" points="'+line+'" vector-effect="non-scaling-stroke"/>'+
       '</svg></div>';
   }
-  function exHtml(e){
+  function exHtml(e,grp){
     var an=analyse(e);
     var sessions=e.ss.slice();
     var last=sessions[sessions.length-1];
-    var recTxt=an.rec?'<div class="rec"><b>'+num(an.rec.kg)+' <small>kg × '+an.rec.r+'</small></b><span>record · '+fmtD(an.rec.d)+'</span></div>':'<div class="rec"><span>pas de série valide</span></div>';
-    var h='<article class="ex"><div class="ex-top"><div><div class="ex-name">'+esc(e.n)+(an.isPR?'<span class="badge">RECORD</span>':'')+'</div>'+
+    var recTxt=an.rec?'<div class="rec"><b>'+num(an.rec.kg)+'<small>kg × '+an.rec.r+'</small></b><span>record · '+fmtD(an.rec.d)+'</span></div>':'<div class="rec"><span>pas de série valide</span></div>';
+    var kind=kindOf(e.n);
+    var h='<article class="ex'+(state.rig===e.n?' on':'')+'" style="--gc:'+gc(grp)+'"><div class="ex-top"><div><div class="ex-name">'+esc(e.n)+(an.isPR?'<span class="badge">RECORD</span>':'')+'</div>'+
       '<div class="ex-meta">'+sessions.length+' séance'+(sessions.length>1?'s':'')+'</div></div>'+recTxt+'</div>';
     h+=spark(an.tops,e.n);
     if(last)h+='<div class="last"><span class="dt">'+fmtD(last.d)+'</span>'+last.s.map(setHtml).join(' · ')+'</div>';
+    h+='<div class="row">';
     if(sessions.length>1){
       h+='<details class="hist"><summary>Historique ('+Math.min(sessions.length,10)+' dernières)</summary>';
       sessions.slice(-10).reverse().forEach(function(s){
         h+='<div class="sess"><span class="dt">'+fmtD(s.d)+'</span><span class="sets">'+s.s.map(setHtml).join('')+'</span></div>';
       });
       h+='</details>';
-    }
-    return h+'</article>';
+    }else h+='<span></span>';
+    if(an.rec)h+='<button type="button" class="load" data-ex="'+esc(e.n)+'" aria-label="'+LOAD_LABEL[kind]+' : '+esc(e.n)+'">'+LOAD_LABEL[kind]+'</button>';
+    return h+'</div></article>';
   }
 
+  /* --- héros 3D --- */
+  var shownKg=0,countRaf=0;
+  function countTo(el,to,ms){
+    cancelAnimationFrame(countRaf);
+    var from=parseFloat(String(el.getAttribute('data-v')||'0'));
+    el.setAttribute('data-v',to);
+    if(reduced()||!ms||from===to){el.textContent=num(to);return}
+    var t0=performance.now();
+    (function step(now){
+      var k=Math.min(1,(now-t0)/ms),e=1-Math.pow(1-k,3);
+      var v=from+(to-from)*e;
+      el.textContent=num(k<1?Math.round(v*2)/2:to);
+      if(k<1)countRaf=requestAnimationFrame(step);
+    })(t0);
+  }
+  var heroKg;
+  function selectRig(e,an,animateNumber){
+    if(!e||!an||!an.rec)return;
+    state.rig=e.n;
+    var L=lookup[e.n],grp=L?L.g:'';
+    document.documentElement.style.setProperty('--gc',gc(grp));
+    $('lift-tag').textContent=grp;
+    var kind=kindOf(e.n);
+    var spec={kind:kind,kg:an.rec.kg,label:e.n};
+    window.__rig=spec;
+    window.dispatchEvent(new CustomEvent('rig:set',{detail:spec}));
+    $('lift-name').textContent=e.n;
+    $('lift-meta').textContent='Record du '+fmtDY(an.rec.d)+' · '+an.rec.r+' rep'+(an.rec.r>1?'s':'');
+    countTo(heroKg,an.rec.kg,animateNumber?900:0);
+    $('rig').setAttribute('aria-label','Montage 3D : '+e.n+', '+num(an.rec.kg)+' kg. Glisse pour tourner.');
+  }
+
+  var lookup={};
   function render(){
     var gs=build();
+    lookup={};
+    gs.forEach(function(g){g.ex.forEach(function(e){lookup[e.n]={e:e,an:analyse(e),g:g.g}})});
     var days={},nsets=0,first=null,lastD=null;
     gs.forEach(function(g){g.ex.forEach(function(e){e.ss.forEach(function(s){
       var w=s.s.filter(function(a){return a[2]!=='w'});
@@ -234,10 +480,21 @@ button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transpare
       if(!first||s.d<first)first=s.d;if(!lastD||s.d>lastD)lastD=s.d;
     })})});
     $('tiles').innerHTML=
-      '<div class="tile"><b>'+Object.keys(days).length+'</b><span>jours d’entraînement</span></div>'+
-      '<div class="tile"><b>'+nsets+'</b><span>séries de travail</span></div>'+
-      '<div class="tile"><b>'+fmtD(lastD)+'</b><span>dernière séance</span></div>';
+      '<div class="stat"><b data-count="'+Object.keys(days).length+'">'+Object.keys(days).length+'</b><span>jours d’entraînement</span></div>'+
+      '<div class="stat"><b data-count="'+nsets+'">'+nsets+'</b><span>séries de travail</span></div>'+
+      '<div class="stat"><b>'+fmtD(lastD)+'</b><span>dernière séance</span></div>';
     $('sub').textContent='Force par groupe musculaire, depuis le '+fmtDY(first)+'.';
+    if(state.first&&!reduced()){
+      Array.prototype.forEach.call($('tiles').querySelectorAll('[data-count]'),function(b,i){
+        var to=parseInt(b.getAttribute('data-count'),10),t0=performance.now()+300+i*120;
+        b.textContent='0';
+        (function step(now){
+          var k=Math.max(0,Math.min(1,(now-t0)/1100));
+          b.textContent=String(Math.round(to*(1-Math.pow(1-k,3))));
+          if(k<1)requestAnimationFrame(step);
+        })(performance.now());
+      });
+    }
 
     /* records récents : 21 jours avant la dernière séance */
     var ref=new Date(lastD+'T12:00:00');ref.setDate(ref.getDate()-21);
@@ -252,18 +509,18 @@ button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transpare
         if(t.kg>run)run=t.kg;
       }
     })});
-    /* un seul record par exercice : le plus récent */
-    var seen={};prs=prs.sort(function(a,b){return a.d<b.d?1:a.d>b.d?-1:b.kg-a.kg}).filter(function(p){if(seen[p.n])return false;seen[p.n]=1;return true}).slice(0,5);
+    var seen={};prs=prs.sort(function(a,b){return a.d<b.d?1:a.d>b.d?-1:b.kg-a.kg}).filter(function(p){if(seen[p.n])return false;seen[p.n]=1;return true}).slice(0,6);
     $('prs').innerHTML=prs.length?prs.map(function(p){
-      return '<div class="pr"><div><div class="n">'+esc(p.n)+'</div><div class="d">'+fmtD(p.d)+'</div></div>'+
-        '<div class="v">'+num(p.kg)+' kg × '+p.r+'<small>+'+num(p.kg-p.from)+' kg</small></div></div>';
+      var pg=lookup[p.n]?lookup[p.n].g:'';
+      return '<button type="button" class="pr" style="--gc:'+gc(pg)+'" data-ex="'+esc(p.n)+'" aria-label="'+esc(p.n)+', '+num(p.kg)+' kilos, record du '+fmtD(p.d)+'. Voir en 3D"><span class="n">'+esc(p.n)+'</span>'+
+        '<span class="v">'+num(p.kg)+'<i>kg × '+p.r+'</i></span><span class="g">+'+num(p.kg-p.from)+' kg<span class="d">'+fmtD(p.d)+'</span></span></button>';
     }).join(''):'<p class="note">Aucun record dans les 3 dernières semaines.</p>';
 
     /* chips */
     var names=['Tous'].concat(gs.map(function(g){return g.g}));
     if(names.indexOf(state.group)<0)state.group='Tous';
     $('chips').innerHTML=names.map(function(n){
-      return '<button type="button" class="chip" data-g="'+esc(n)+'" aria-pressed="'+(n===state.group)+'">'+esc(n)+'</button>';
+      return '<button type="button" class="chip" style="--gc:'+(n==='Tous'?'#E9EDF0':gc(n))+'" data-g="'+esc(n)+'" aria-pressed="'+(n===state.group)+'">'+esc(n)+'</button>';
     }).join('');
 
     /* liste */
@@ -272,9 +529,11 @@ button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transpare
       if(state.group!=='Tous'&&g.g!==state.group)return;
       var list=g.ex.filter(function(e){return !q||e.n.toLowerCase().indexOf(q)>-1});
       if(!list.length)return;
-      if(state.group==='Tous')out+='<h2>'+esc(g.g)+'</h2>';
-      list.forEach(function(e){out+=exHtml(e);count++});
+      if(state.group==='Tous')out+='<h2 style="--gc:'+gc(g.g)+'">'+esc(g.g)+'</h2>';
+      list.forEach(function(e){out+=exHtml(e,g.g);count++});
     });
+    $('list').className=state.anim?'anim':'';
+    state.anim=false;
     $('list').innerHTML=count?out:'<p class="empty">Aucun exercice trouvé.</p>';
 
     /* formulaire */
@@ -285,17 +544,45 @@ button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transpare
     if(cur)$('g').value=cur;
 
     /* mes ajouts */
-    $('mine').innerHTML=extras.length?'<h2 style="margin-top:0">Mes ajouts</h2>'+extras.map(function(x,i){
+    $('mine').innerHTML=extras.length?'<h2 style="margin-top:0;font-size:22px">Mes ajouts</h2>'+extras.map(function(x,i){
       return '<div class="r"><span>'+fmtD(x.d)+' · '+esc(x.n)+' · '+num(x.kg)+'×'+x.r+(x.ok?'':' (échec)')+'</span><button class="ghost" data-del="'+i+'" aria-label="Supprimer cet ajout">Suppr.</button></div>';
     }).join(''):'';
+
+    /* héros : exercice par défaut = dernier record, sinon le plus suivi */
+    if(!state.rig||!lookup[state.rig]){
+      var pick=null;
+      if(prs.length&&lookup[prs[0].n])pick=lookup[prs[0].n];
+      else{var best=-1;Object.keys(lookup).forEach(function(k){var l=lookup[k];if(l.an.rec&&l.e.ss.length>best){best=l.e.ss.length;pick=l}})}
+      if(pick)selectRig(pick.e,pick.an,true);
+    }else{
+      var cu=lookup[state.rig];
+      if(cu.an.rec&&Math.abs(parseFloat(heroKg.getAttribute('data-v')||'0')-cu.an.rec.kg)>0.001)selectRig(cu.e,cu.an,true);
+    }
+    state.first=false;
+  }
+
+  function loadRig(name){
+    var l=lookup[name];if(!l)return;
+    selectRig(l.e,l.an,true);
+    Array.prototype.forEach.call(document.querySelectorAll('.ex'),function(el){
+      var n=el.querySelector('.ex-name');el.classList.toggle('on',!!n&&n.firstChild&&n.firstChild.textContent===name);
+    });
+    hero.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'start'});
   }
 
   /* --- événements --- */
   $('chips').addEventListener('click',function(ev){
     var b=ev.target.closest('button[data-g]');if(!b)return;
-    state.group=b.getAttribute('data-g');render();
+    var g=b.getAttribute('data-g');
+    function go(){state.group=g;state.anim=true;render()}
+    if(document.startViewTransition&&!reduced())document.startViewTransition(go);else go();
+    var again=$('chips').querySelector('[aria-pressed="true"]');
+    if(again)again.scrollIntoView({inline:'center',block:'nearest',behavior:reduced()?'auto':'smooth'});
   });
-  $('q').addEventListener('input',function(){state.q=this.value;render();var q=$('q');q.focus()});
+  $('q').addEventListener('input',function(){state.q=this.value;render()});
+  document.addEventListener('click',function(ev){
+    var b=ev.target.closest('button[data-ex]');if(b)loadRig(b.getAttribute('data-ex'));
+  });
   $('mine').addEventListener('click',function(ev){
     var b=ev.target.closest('button[data-del]');if(!b)return;
     extras.splice(parseInt(b.getAttribute('data-del'),10),1);saveExtras();render();
@@ -309,9 +596,18 @@ button.ghost{font:inherit;font-size:13px;color:var(--muted);background:transpare
     $('kg').value='';$('r').value='';
     render();
   });
+  $('rig').addEventListener('pointerdown',function(){hero.classList.add('dragged')});
+  $('rig').addEventListener('keydown',function(){hero.classList.add('dragged')});
   $('d').value=new Date().toISOString().slice(0,10);
+
+  heroKg=$('lift-kg');
   render();
+  /* un seul moment orchestré : l'entrée du héros */
+  requestAnimationFrame(function(){requestAnimationFrame(function(){hero.classList.add('go')})});
 })();
 </script>
+<script src="scene.js?v=3" defer></script>
 </body>
 </html>
+
+</body></html>
