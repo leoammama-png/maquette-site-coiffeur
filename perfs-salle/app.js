@@ -16,13 +16,9 @@
   function fmtD(d){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d);return m?m[3]+'/'+m[2]:d}
   function fmtDY(d){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d);return m?m[3]+'/'+m[2]+'/'+m[1]:d}
   function num(n){return String(Math.round(n*100)/100).replace('.',',')}
-  var GC={'Pectoraux':'#FF4D3D','Dos':'#3D8BFF','Épaules':'#FFB020','Biceps':'#19D98B','Triceps':'#FF3D8B','Avant-bras':'#19D3D3','Quadriceps':'#A8E63D','Ischios & fessiers':'#FF7A2E','Mollets':'#4DC3FF','Abdos':'#FFD23D'};
+  var GC={};
   var GCX=['#FF6B6B','#4DD0E1','#FFCA28','#66BB6A','#FF7043','#29B6F6'];
-  function gc(g){
-    if(GC[g])return GC[g];
-    var h=0;for(var i=0;i<String(g).length;i++)h=(h*31+String(g).charCodeAt(i))>>>0;
-    return GCX[h%GCX.length];
-  }
+  function gc(g){return '#F2F2F2'}
 
   /* --- modèle --- */
   function build(){
@@ -295,7 +291,7 @@
   $('chips').addEventListener('click',function(ev){
     var b=ev.target.closest('button[data-g]');if(!b)return;
     var g=b.getAttribute('data-g');
-    function go(){state.group=g;state.anim=true;document.documentElement.style.setProperty('--gc',g==='Tous'?'#FF4D3D':gc(g));render()}
+    function go(){state.group=g;state.anim=true;document.documentElement.style.setProperty('--gc','#F2F2F2');render()}
     if(document.startViewTransition&&!reduced())document.startViewTransition(go);else go();
     var again=$('chips').querySelector('[aria-pressed="true"]');
     if(again)again.scrollIntoView({inline:'center',block:'nearest',behavior:reduced()?'auto':'smooth'});
